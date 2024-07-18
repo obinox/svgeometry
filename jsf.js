@@ -48,7 +48,11 @@ class JSF {
         return JSF.Join(s0, JSF.array);
     }
     static Prop(s0, idx) {
-        return (eval(s0) instanceof Array || eval(s0) instanceof Function ? s0 : JSF.toObject(s0)) + JSF.toArray(idx);
+        let b0 = false;
+        try {
+            b0 = eval(s0 + JSF.toArray(idx)) == eval(JSF.toObject(s0) + JSF.toArray(idx));
+        } catch {}
+        return (b0 ? s0 : JSF.toObject(s0)) + JSF.toArray(idx);
     }
 
     static boolean = JSF.toNot(JSF.array);
@@ -220,7 +224,25 @@ class JSF {
         return JSF.Func(JSF.__btoa, s0);
     }
 
-    static MQ = JSF.Btoa(JSF._f);
+    static BTOA_a = JSF.Btoa(JSF.Join(JSF._a, JSF._a));
+    static BTOA_true = JSF.Btoa(JSF.true);
+    static BTOA_b = JSF.Btoa(JSF._b);
+    static BTOA_c = JSF.Btoa(JSF._c);
+    static BTOA_d = JSF.Btoa(JSF._d);
+    static BTOA_e = JSF.Btoa(JSF._e);
+    static BTOA_f = JSF.Btoa(JSF._f);
+    static BTOA_g = JSF.Btoa(JSF._g);
+    static BTOA_i = JSF.Btoa(JSF._i);
+    static BTOA_j = JSF.Btoa(JSF._j);
+    static BTOA_m = JSF.Btoa(JSF._m);
+    static BTOA_n = JSF.Btoa(JSF._n);
+    static BTOA_o = JSF.Btoa(JSF._o);
+    static BTOA_r = JSF.Btoa(JSF._r);
+    static BTOA_s = JSF.Btoa(JSF._s);
+    static BTOA_t = JSF.Btoa(JSF._t);
+    static BTOA_u = JSF.Btoa(JSF._u);
+    static BTOA_v = JSF.Btoa(JSF._v);
+    static BTOA_y = JSF.Btoa(JSF._y);
     // static _U2 = JSF.toFunc(JSF.Prop(JSF.Prop(JSF.objObj, JSF.__toString), JSF.__call));
     // toString radix method -> h
     static Radix(i0, r0, idx = "") {
@@ -277,15 +299,9 @@ window.onload = () => {
         // console.log(error);
     }
 };
-v = JSF.Btoa(JSF[0]) + "[+[]]";
-v = JSF.Prop(JSF.Btoa(JSF[0]), JSF[0]);
+v = "([false]+[])[1]";
+// v = JSF.Prop(JSF.Btoa(JSF[0]), JSF[0]);
 console.log(v);
 console.log(eval(v));
 
-console.log(NaN + crypto);
-console.log(NaN + crypto);
-console.log(NaN + crypto);
-console.log(NaN + crypto);
-crypto.subtle;
-a = JSF.Btoa(JSF[0]);
-console.log(typeof eval(a));
+console.log(typeof eval(v));
