@@ -10,11 +10,11 @@ class JSF {
     // small application
     static jPar = JSF.jlP + JSF.jrP; // ()
     static jBrk = JSF.jlB + JSF.jrB; // []
-    static toObject(s0 = "") {
+    static toObj(s0 = "") {
         return JSF.jlP + s0 + JSF.jrP;
     }
     static toFunc(f0 = "", p0 = "") {
-        return f0 + JSF.toObject(p0);
+        return f0 + JSF.toObj(p0);
     }
 
     // objects
@@ -36,8 +36,15 @@ class JSF {
     static Join(...args) {
         return args.join(JSF.jPlus);
     }
+    static Stringfy(s0 = "") {
+        return JSF.Join(
+            ...s0.split("").map((s1, i0) => {
+                return !isNaN(parseInt(s1)) ? (i0 == 0 ? JSF[s1] : JSF.toArray(JSF[s1])) : JSF[`_${s1}`];
+            })
+        );
+    }
     static getNum(...args) {
-        return JSF.toNum(JSF.toObject(JSF.getRaw(...args)));
+        return JSF.toNum(JSF.toObj(JSF.getRaw(...args)));
     }
     static getRaw(...args) {
         return JSF.Join(...args.map((arg, idx) => (idx == 0 || eval(arg) === "e" ? arg : JSF.toArray(arg))));
@@ -50,9 +57,9 @@ class JSF {
     static Prop(s0, idx) {
         let b0 = false;
         try {
-            b0 = eval(s0 + JSF.toArray(idx)) == eval(JSF.toObject(s0) + JSF.toArray(idx));
+            b0 = eval(s0 + JSF.toArray(idx)) == eval(JSF.toObj(s0) + JSF.toArray(idx));
         } catch {}
-        return (b0 ? s0 : JSF.toObject(s0)) + JSF.toArray(idx);
+        return (b0 ? s0 : JSF.toObj(s0)) + JSF.toArray(idx);
     }
 
     static boolean = JSF.toNot(JSF.array);
@@ -105,79 +112,91 @@ class JSF {
     static false0 = JSF.Join(JSF.false, JSF.toArray(JSF[0]));
 
     // words
-    // undefined -> u n d i
+    // undefined -> "u" "n" "d" "i"
     static _u = JSF.Prop(JSF.toStr(JSF.undefined), JSF[0]);
     static _n = JSF.Prop(JSF.toStr(JSF.undefined), JSF[1]);
     static _d = JSF.Prop(JSF.toStr(JSF.undefined), JSF[2]);
     static _i = JSF.Prop(JSF.Join(JSF.toArray(JSF.false), JSF.undefined), JSF._10);
-    // false -> f a l s
+    // false -> "f" "a" "l" "s"
     static _f = JSF.Prop(JSF.toStr(JSF.false), JSF[0]);
     static _a = JSF.Prop(JSF.toStr(JSF.false), JSF[1]);
     static _l = JSF.Prop(JSF.toStr(JSF.false), JSF[2]);
     static _s = JSF.Prop(JSF.toStr(JSF.false), JSF[3]);
-    // true -> t r e
+    // true -> "t" "r" "e"
     static _t = JSF.Prop(JSF.toStr(JSF.true), JSF[0]);
     static _r = JSF.Prop(JSF.toStr(JSF.true), JSF[1]);
     static _e = JSF.Prop(JSF.toStr(JSF.true), JSF[3]);
-    // NaN -> N
+    // NaN -> "N"
     static _N = JSF.Prop(JSF.toStr(JSF.NaN), JSF[0]);
-    // Infinity -> I y
+    // Infinity -> "I" "y"
     static Infinity = JSF.getNum(JSF[1], JSF._e, JSF[1], JSF[0], JSF[0], JSF[0]);
     static _I = JSF.Prop(JSF.toStr(JSF.Infinity), JSF[0]);
     static _y = JSF.Prop(JSF.Join(JSF.NaN, JSF.toArray(JSF.Infinity)), JSF._10);
-    // 1e+100 -> +
+    // 1e+100 -> "+"
     static _1e100 = JSF.getNum(JSF[1], JSF._e, JSF[1], JSF[0], JSF[0]);
-    static _Plus = JSF.Prop(JSF.toStr(JSF._1e100), JSF[2]);
-    // 1.1e+21 -> .
+    static _PLUS = JSF.Prop(JSF.toStr(JSF._1e100), JSF[2]);
+    // 1.1e+21 -> "."
     static _11e21 = JSF.getNum(JSF[1], JSF[1], JSF._e, JSF[2], JSF[0]);
-    static _Period = JSF.Prop(JSF.toStr(JSF._11e21), JSF[1]);
-    // 1e-7 -> -
-    static _1e7 = JSF.getNum(JSF._Period, ...Array(6).fill(JSF[0]), JSF[1]);
-    static _Minus = JSF.Prop(JSF.toStr(JSF._1e7), JSF[2]);
+    static _PERIOD = JSF.Prop(JSF.toStr(JSF._11e21), JSF[1]);
+    // 1e-7 -> "-"
+    static _1e7 = JSF.getNum(JSF._PERIOD, ...Array(6).fill(JSF[0]), JSF[1]);
+    static _MINUS = JSF.Prop(JSF.toStr(JSF._1e7), JSF[2]);
 
-    // Array instance methods
+    // Array instance method
     static __at = JSF.Join(JSF._a, JSF._t);
-    static function = JSF.Prop(JSF.array, JSF.__at);
-    // function at() { [native code] } -> c o v
-    static _c = JSF.Prop(JSF.toStr(JSF.function), JSF[3]);
-    static _o = JSF.Prop(JSF.Join(JSF.true, JSF.function), JSF._10);
-    static _v = JSF.Prop(JSF.toStr(JSF.function), JSF._21);
-    // function at() { [native code] } -> (Space) () [] {}
-    static _Space = JSF.Prop(JSF.Join(JSF.false, JSF.function), JSF._20);
-    static _LPar = JSF.Prop(JSF.toStr(JSF.function), JSF._11);
-    static _RPar = JSF.Prop(JSF.toStr(JSF.function), JSF._12);
-    static _LBrk = JSF.Prop(JSF.Join(JSF.true, JSF.function), JSF._20);
-    static _RBrk = JSF.Prop(JSF.Join(JSF.NaN, JSF.function), JSF._31);
-    static _LBrc = JSF.Prop(JSF.Join(JSF.false0, JSF.function), JSF._20);
-    static _RBrc = JSF.Prop(JSF.toStr(JSF.function), JSF._30);
-    static _Brc = JSF.Join(JSF._LBrc, JSF._RBrc);
-    static jBrc = JSF._Brc; // {}
+    static At = JSF.Prop(JSF.array, JSF.__at);
+    // function at() { [native code] } -> "c" "o" "v"
+    static _c = JSF.Prop(JSF.toStr(JSF.At), JSF[3]);
+    static _o = JSF.Prop(JSF.Join(JSF.true, JSF.At), JSF._10);
+    static _v = JSF.Prop(JSF.toStr(JSF.At), JSF._21);
+    // function at() { [native code] } -> " " "(" ")" "[" "]" "{" "}"
+    static _SPACE = JSF.Prop(JSF.Join(JSF.false, JSF.At), JSF._20);
+    static _LPAR = JSF.Prop(JSF.toStr(JSF.At), JSF._11);
+    static _RPAR = JSF.Prop(JSF.toStr(JSF.At), JSF._12);
+    static _LBRK = JSF.Prop(JSF.Join(JSF.true, JSF.At), JSF._20);
+    static _RBRK = JSF.Prop(JSF.Join(JSF.NaN, JSF.At), JSF._31);
+    static _LBRC = JSF.Prop(JSF.Join(JSF.false0, JSF.At), JSF._20);
+    static _RBRC = JSF.Prop(JSF.toStr(JSF.At), JSF._30);
+    static _BRC = JSF.Join(JSF._LBRC, JSF._RBRC);
+    static jBrc = JSF._BRC; // "{}"
+    // "(s0)"
     static toPar(s0 = "") {
-        return JSF.Join(JSF._LPar, s0, JSF._RPar);
+        return JSF.Join(JSF._LPAR, s0, JSF._RPAR);
     }
+    // "{s0}"
     static toBrc(s0 = "") {
-        return JSF.Join(JSF._LBrc, s0, JSF._RBrc);
+        return JSF.Join(JSF._LBRC, s0, JSF._RBRC);
     }
 
-    static __function = JSF.Join(JSF._f, JSF._u, JSF._n, JSF._c, JSF._t, JSF._i, JSF._o, JSF._n);
-    static __constructor = JSF.Join(JSF._c, JSF._o, JSF._n, JSF._s, JSF._t, JSF._r, JSF._u, JSF._c, JSF._t, JSF._o, JSF._r);
-    static __return = JSF.Join(JSF._r, JSF._e, JSF._t, JSF._u, JSF._r, JSF._n);
-    static __entries = JSF.Join(JSF._e, JSF._n, JSF._t, JSF._r, JSF._i, JSF._e, JSF._s);
-    static __try = JSF.Join(JSF._t, JSF._r, JSF._y);
-    static __finally = JSF.Join(JSF._f, JSF._i, JSF._n, JSF._a, JSF._l, JSF._l, JSF._y);
-    static __if = JSF.Join(JSF._i, JSF._f);
-    static __else = JSF.Join(JSF._e, JSF._l, JSF._s, JSF._e);
-    static __for = JSF.Join(JSF._f, JSF._o, JSF._r);
-    static __concat = JSF.Join(JSF._c, JSF._o, JSF._n, JSF._c, JSF._a, JSF._t);
-    static __call = JSF.Join(JSF._c, JSF._a, JSF._l, JSF._l);
+    static __flat = JSF.Stringfy("flat");
+    static __fill = JSF.Stringfy("fill");
+    static __find = JSF.Stringfy("find");
+    static __filter = JSF.Stringfy("filter");
+    static __constructor = JSF.Stringfy("constructor");
+    static __entries = JSF.Stringfy("entries");
+    static __function = JSF.Stringfy("function");
+    static __call = JSF.Stringfy("call");
+    static __concat = JSF.Stringfy("concat");
 
-    static Execute(f0 = "", p0 = "") {
-        return JSF.toFunc(JSF.toFunc(JSF.Prop(JSF.Prop(JSF.array, JSF.__at), JSF.__constructor), f0), p0);
+    static __return = JSF.Stringfy("return");
+
+    static __finally = JSF.Stringfy("finally");
+    static __if = JSF.Stringfy("if");
+    static __else = JSF.Stringfy("else");
+    static __for = JSF.Stringfy("for");
+
+    // excute function
+    // []["at"]["constructor"]("f0")("p0") -> (() => {f0})()
+    static Anonymous(f0 = "") {
+        return JSF.toFunc(JSF.toFunc(JSF.Prop(JSF.Prop(JSF.array, JSF.__at), JSF.__constructor), f0));
     }
+    // retrun value
+    // []["at"]["constructor"]("return f0")() -> f0
     static Return(f0 = "") {
-        return JSF.Execute(JSF.Join(JSF.__return, JSF._Space, f0));
+        return JSF.Anonymous(JSF.Join(JSF.__return, JSF._SPACE, f0));
     }
-    static Func(f0 = "", p0 = "") {
+    // Run function []["at"]["constructor"]("return f0")()("p0") -> f0(p0)
+    static Execution(f0 = "", p0 = "") {
         return JSF.toFunc(JSF.Return(f0), p0);
     }
 
@@ -192,57 +211,78 @@ class JSF {
     static _A = JSF.Prop(JSF.Join(JSF.NaN, JSF.toFunc(JSF.Iterator)), JSF._11);
 
     // array constructor -> Array Object
-    // Array -> A
+    // Array -> "A"
     static Array = JSF.Prop(JSF.array, JSF.__constructor);
     // number constructor -> Number Object
-    // Number -> m
+    // Number -> "m"
     static Number = JSF.Prop(JSF.number, JSF.__constructor);
     static _m = JSF.Prop(JSF.toStr(JSF.Number), JSF._11);
     // string constructor -> String Object
-    // String -> S g
+    // String -> "S" "g"
     static String = JSF.Prop(JSF.string, JSF.__constructor);
     static _S = JSF.Prop(JSF.Join(JSF[0], JSF.String), JSF._10);
     static _g = JSF.Prop(JSF.Join(JSF.false0, JSF.String), JSF._20);
+
     // boolean constructor -> Boolean Object
-    // Boolean -> B
+    // Boolean -> "B"
     static Boolean = JSF.Prop(JSF.boolean, JSF.__constructor);
     static _B = JSF.Prop(JSF.Join(JSF[0], JSF.Boolean), JSF._10);
     // function constructor -> Function Object
-    // Function -> F
-    static Function = JSF.Prop(JSF.function, JSF.__constructor);
+    // Function -> "F"
+    static Function = JSF.Prop(JSF.At, JSF.__constructor);
     static _F = JSF.Prop(JSF.Join(JSF[0], JSF.Function), JSF._10);
+    // function anonymous() {}
     static anonymous = JSF.toFunc(JSF.Function);
 
-    static __name = JSF.Join(JSF._n, JSF._a, JSF._m, JSF._e);
+    // (String).name -> "String"
+    static __name = JSF.Stringfy("name");
+    // "to" + "String" -> "toString"
     static __toString = JSF.Join(JSF._t, JSF._o, JSF.Prop(JSF.String, JSF.__name));
-    static __btoa = JSF.Join(JSF._b, JSF._t, JSF._o, JSF._a);
 
-    static Undefined = JSF.Func(JSF.__toString);
-    static _U = JSF.Prop(JSF.Join(JSF.NaN, JSF.Func(JSF.__toString)), JSF._11);
+    // [object Undefined]
+    static Undefined = JSF.Execution(JSF.__toString);
+    static _U = JSF.Prop(JSF.Join(JSF.NaN, JSF.Execution(JSF.__toString)), JSF._11);
 
+    // btoa, atob function
+    static __btoa = JSF.Stringfy("btoa");
+    static __atob = JSF.Stringfy("atob");
+    // base64 -> ascii
     static Btoa(s0 = "") {
-        return JSF.Func(JSF.__btoa, s0);
+        return JSF.Execution(JSF.__btoa, s0);
+    }
+    // ascii -> base64
+    static Atob(s0 = "") {
+        return JSF.Execution(JSF.__atob, s0);
     }
 
-    static BTOA_a = JSF.Btoa(JSF.Join(JSF._a, JSF._a));
-    static BTOA_true = JSF.Btoa(JSF.true);
-    static BTOA_b = JSF.Btoa(JSF._b);
-    static BTOA_c = JSF.Btoa(JSF._c);
-    static BTOA_d = JSF.Btoa(JSF._d);
-    static BTOA_e = JSF.Btoa(JSF._e);
-    static BTOA_f = JSF.Btoa(JSF._f);
-    static BTOA_g = JSF.Btoa(JSF._g);
-    static BTOA_i = JSF.Btoa(JSF._i);
-    static BTOA_j = JSF.Btoa(JSF._j);
-    static BTOA_m = JSF.Btoa(JSF._m);
-    static BTOA_n = JSF.Btoa(JSF._n);
-    static BTOA_o = JSF.Btoa(JSF._o);
-    static BTOA_r = JSF.Btoa(JSF._r);
-    static BTOA_s = JSF.Btoa(JSF._s);
-    static BTOA_t = JSF.Btoa(JSF._t);
-    static BTOA_u = JSF.Btoa(JSF._u);
-    static BTOA_v = JSF.Btoa(JSF._v);
-    static BTOA_y = JSF.Btoa(JSF._y);
+    static BTOA_EXCLAMATION = JSF.Atob(JSF.Stringfy("If")); //APOSTROPHE APOSTROPHE
+    static BTOA_QUOTATION = JSF.Prop(JSF.Atob(JSF.Stringfy("000i")), JSF[2]);
+    static BTOA_NUMBER = JSF.Atob(JSF.Stringfy("I0"));
+    static BTOA_DOLLAR = JSF.Prop(JSF.Atob(JSF.Stringfy("0iS")), JSF[1]);
+    static BTOA_PERCENT = JSF.Prop(JSF.Atob(JSF.Stringfy("000l")), JSF[2]);
+    static BTOA_AMPERSAND = JSF.Prop(JSF.Atob(JSF.Stringfy("0ia")), JSF[1]);
+    static BTOA_APOSTROPHE = JSF.Prop(JSF.Atob(JSF.Stringfy("000n")), JSF[2]);
+    static BTOA_ASTERISK = JSF.Prop(JSF.Atob(JSF.Stringfy("0ir")), JSF[1]);
+    static BTOA_COMMA = JSF.Prop(JSF.Atob(JSF.Stringfy("000s")), JSF[2]);
+    static BTOA_COLON = JSF.Prop(JSF.Atob(JSF.Stringfy("000s")), JSF[2]);
+
+    // :	A,I,c,g,o,s,0,4,8	6	j	o,r	O	g,i,j,l,m,n,o,r,s,t,u,v
+    // ;	A,I,c,g,o,s,0,4,8	7	j	s,t,u,v	O	y,0,1,2,3,4,5,6,7,8,9,+
+    // <	A,I,c,g,o,s,0,4,8	8	j	y		A,B,F,I,N,O
+    // =	A,I,c,g,o,s,0,4,8	9	j	0,1,2,3		S,a,b,c,d,e,f
+    // >	A,I,c,g,o,s,0,4,8	+	j	4,5,6,7		g,i,j,l,m,n,o,r,s,t,u,v
+    // ?	A,I,c,g,o,s,0,4,8		j	8,9,+		y,0,1,2,3,4,5,6,7,8,9,+
+    // @	B,F,N,d,l,t,1,5,9	A	0	A,B		A,B,F,I,N,O
+    // "false0".italics() (Deprecated)
+    // "<i>false0</i>" -> "<" ">" "/"
+    static __italics = JSF.Stringfy("italics");
+    static Italics = JSF.toFunc(JSF.Prop(JSF.false0, JSF.__italics));
+    static _$lash = JSF.Prop(JSF.Italics, JSF._10);
+
+    //
+    static Atob_000v = JSF.Atob(JSF.Stringfy("000v"));
+    static _Slash = JSF.Prop(JSF.Atob_000v, JSF[2]);
+
     // static _U2 = JSF.toFunc(JSF.Prop(JSF.Prop(JSF.objObj, JSF.__toString), JSF.__call));
     // toString radix method -> h
     static Radix(i0, r0, idx = "") {
@@ -258,48 +298,35 @@ class JSF {
     static _x = JSF.Radix(JSF[101], JSF._34, JSF[1]);
     static _z = JSF.Radix(JSF[35], JSF._36);
 
-    static __catch = JSF.Join(JSF._c, JSF._a, JSF._t, JSF._c, JSF._h);
+    static __try = JSF.Stringfy("try");
+    static __catch = JSF.Stringfy("catch");
 
     static Error(s0 = "") {
-        return JSF.Execute(JSF.Join(JSF.__try, JSF.toBrc(s0), JSF.__catch, JSF.toPar(JSF._f), JSF.toBrc(JSF.Join(JSF.__return, JSF._Space, JSF._f))));
+        return JSF.Anonymous(JSF.Join(JSF.__try, JSF.toBrc(s0), JSF.__catch, JSF.toPar(JSF._f), JSF.toBrc(JSF.Join(JSF.__return, JSF._SPACE, JSF._f))));
     }
     static error = JSF.Error(JSF._t);
-    static __italics = JSF.Join(JSF._i, JSF._t, JSF._a, JSF._l, JSF._i, JSF._c, JSF._s);
-    static italics = JSF.toFunc(JSF.Prop(JSF._f, JSF.__italics));
 
     // static __values = JSF.Join(JSF._v, JSF._a, JSF._l, JSF._u, JSF._e, JSF._s);
-
-    // static __consolelog = JSF.Join(JSF._c, JSF._o, JSF._n, JSF._s, JSF._o, JSF._l, JSF._e, JSF._Period, JSF._l, JSF._o, JSF._g);
-    //function String() { [native code] }
-    //0123456789012345678901234567890123456789
-    //   static _flat = JSF.Join(JSF._f, JSF._l, JSF._a, JSF._t);
-    //   static _fill = JSF.Join(JSF._f, JSF._i, JSF._l, JSF._l);
-    //   static _find = JSF.Join(JSF._f, JSF._i, JSF._n, JSF._d);
-    //   static _filter = JSF.Join(JSF._f, JSF._i, JSF._l, JSF._t, JSF._e, JSF._r);
-    //   static _func1 = JSF.Prop(JSF.Array, JSF._flat);
-    //   static _func2 = JSF.Prop(JSF.Array, JSF._fill);
-    //   static _func3 = JSF.Prop(JSF.Array, JSF._find);
-    //   static _func4 = JSF.Prop(JSF.Array, JSF._filter);
-    //   static _func5 = JSF.Prop(JSF.Array, JSF._entries);
 }
 
-var tt, st, pt;
+var tt, ba, pt;
 window.onload = () => {
     try {
         tt = document.getElementById("text");
         pt = document.getElementById("props");
-        st = Object.getOwnPropertyNames(JSF).filter((arg) => {
+        ba = Object.getOwnPropertyNames(JSF).filter((arg) => {
             return typeof JSF[arg] !== "function" && JSF[arg].length !== undefined && JSF[arg] !== "JSF" && arg[0] !== "j";
         });
-        st.forEach((arg) => {
-            tt.innerHTML += "<tr>" + "<td>" + arg + "</td>" + '<td><xmp>"' + eval(JSF[arg]) + '"</xmp></td>' + "<td>" + JSF[arg] + "</td>" + "<td>" + JSF[arg].length + "</td>" + "</tr>";
+        ba.forEach((arg) => {
+            tt.innerHTML += `<tr><td>${arg}</td><td><xmp>"${eval(JSF[arg])}"</xmp></td><td>${JSF[arg]}</td><td>${JSF[arg].length}</td></tr>`;
         });
         pt.innerHTML += Object.getOwnPropertyNames(JSF).sort();
     } catch (error) {
         // console.log(error);
     }
 };
-v = "([false]+[])[1]";
+k = "";
+v = !isNaN(parseInt(k));
 // v = JSF.Prop(JSF.Btoa(JSF[0]), JSF[0]);
 console.log(v);
 console.log(eval(v));
