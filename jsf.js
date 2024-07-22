@@ -94,6 +94,7 @@ class JSF {
     static 35 = JSF.getNum(JSF[3], JSF[5]);
     static 36 = JSF.getNum(JSF[3], JSF[6]);
     static 101 = JSF.getNum(JSF[1], JSF[0], JSF[1]);
+    static 211 = JSF.getNum(JSF[2], JSF[1], JSF[1]);
     static _00 = JSF.getRaw(JSF[0], JSF[0]);
     static _10 = JSF.getRaw(JSF[1], JSF[0]);
     static _11 = JSF.getRaw(JSF[1], JSF[1]);
@@ -108,6 +109,7 @@ class JSF {
     static _35 = JSF.getRaw(JSF[3], JSF[5]);
     static _36 = JSF.getRaw(JSF[3], JSF[6]);
     static _101 = JSF.getRaw(JSF[1], JSF[0], JSF[1]);
+    static _211 = JSF.getRaw(JSF[2], JSF[1], JSF[1]);
 
     static false0 = JSF.Join(JSF.false, JSF.toArray(JSF[0]));
 
@@ -134,13 +136,13 @@ class JSF {
     static _y = JSF.Prop(JSF.Join(JSF.NaN, JSF.toArray(JSF.Infinity)), JSF._10);
     // 1e+100 -> "+"
     static _1e100 = JSF.getNum(JSF[1], JSF._e, JSF[1], JSF[0], JSF[0]);
-    static _PLUS = JSF.Prop(JSF.toStr(JSF._1e100), JSF[2]);
+    static _PLUS = JSF.Prop(JSF.toStr(JSF._1e100), JSF[2]); //&plus;
     // 1.1e+21 -> "."
     static _11e21 = JSF.getNum(JSF[1], JSF[1], JSF._e, JSF[2], JSF[0]);
-    static _PERIOD = JSF.Prop(JSF.toStr(JSF._11e21), JSF[1]);
+    static _PERIOD = JSF.Prop(JSF.toStr(JSF._11e21), JSF[1]); //&period;
     // 1e-7 -> "-"
     static _1e7 = JSF.getNum(JSF._PERIOD, ...Array(6).fill(JSF[0]), JSF[1]);
-    static _MINUS = JSF.Prop(JSF.toStr(JSF._1e7), JSF[2]);
+    static _MINUS = JSF.Prop(JSF.toStr(JSF._1e7), JSF[2]); //&minus;
 
     // Array instance method
     static __at = JSF.Join(JSF._a, JSF._t);
@@ -150,13 +152,13 @@ class JSF {
     static _o = JSF.Prop(JSF.Join(JSF.true, JSF.At), JSF._10);
     static _v = JSF.Prop(JSF.toStr(JSF.At), JSF._21);
     // function at() { [native code] } -> " " "(" ")" "[" "]" "{" "}"
-    static _SPACE = JSF.Prop(JSF.Join(JSF.false, JSF.At), JSF._20);
-    static _LPAR = JSF.Prop(JSF.toStr(JSF.At), JSF._11);
-    static _RPAR = JSF.Prop(JSF.toStr(JSF.At), JSF._12);
-    static _LBRK = JSF.Prop(JSF.Join(JSF.true, JSF.At), JSF._20);
-    static _RBRK = JSF.Prop(JSF.Join(JSF.NaN, JSF.At), JSF._31);
-    static _LBRC = JSF.Prop(JSF.Join(JSF.false0, JSF.At), JSF._20);
-    static _RBRC = JSF.Prop(JSF.toStr(JSF.At), JSF._30);
+    static _SPACE = JSF.Prop(JSF.Join(JSF.false, JSF.At), JSF._20); //&nbsp;
+    static _LPAR = JSF.Prop(JSF.toStr(JSF.At), JSF._11); //&lpar;
+    static _RPAR = JSF.Prop(JSF.toStr(JSF.At), JSF._12); //&rpar;
+    static _LBRK = JSF.Prop(JSF.Join(JSF.true, JSF.At), JSF._20); //&lbrack; &lsqb;
+    static _RBRK = JSF.Prop(JSF.Join(JSF.NaN, JSF.At), JSF._31); //&rbrack; &rsqb;
+    static _LBRC = JSF.Prop(JSF.Join(JSF.false0, JSF.At), JSF._20); //&lbrace; &lcub;
+    static _RBRC = JSF.Prop(JSF.toStr(JSF.At), JSF._30); //&rbrace; &rcub;
     static _BRC = JSF.Join(JSF._LBRC, JSF._RBRC);
     static jBrc = JSF._BRC; // "{}"
     // "(s0)"
@@ -247,32 +249,48 @@ class JSF {
     static __btoa = JSF.Stringfy("btoa");
     static __atob = JSF.Stringfy("atob");
     // base64 -> ascii
-    static Btoa(s0 = "") {
-        return JSF.Execution(JSF.__btoa, s0);
+    static Btoa(s0 = "", idx = "") {
+        if (idx === "") {
+            return JSF.Execution(JSF.__btoa, s0);
+        } else {
+            return JSF.Prop(JSF.Execution(JSF.__btoa, s0), idx);
+        }
     }
     // ascii -> base64
-    static Atob(s0 = "") {
-        return JSF.Execution(JSF.__atob, s0);
+    static Atob(s0 = "", idx = "") {
+        if (idx === "") {
+            return JSF.Execution(JSF.__atob, s0);
+        } else {
+            return JSF.Prop(JSF.Execution(JSF.__atob, s0), idx);
+        }
     }
 
-    static BTOA_EXCLAMATION = JSF.Atob(JSF.Stringfy("If")); //APOSTROPHE APOSTROPHE
-    static BTOA_QUOTATION = JSF.Prop(JSF.Atob(JSF.Stringfy("000i")), JSF[2]);
-    static BTOA_NUMBER = JSF.Atob(JSF.Stringfy("I0"));
-    static BTOA_DOLLAR = JSF.Prop(JSF.Atob(JSF.Stringfy("0iS")), JSF[1]);
-    static BTOA_PERCENT = JSF.Prop(JSF.Atob(JSF.Stringfy("000l")), JSF[2]);
-    static BTOA_AMPERSAND = JSF.Prop(JSF.Atob(JSF.Stringfy("0ia")), JSF[1]);
-    static BTOA_APOSTROPHE = JSF.Prop(JSF.Atob(JSF.Stringfy("000n")), JSF[2]);
-    static BTOA_ASTERISK = JSF.Prop(JSF.Atob(JSF.Stringfy("0ir")), JSF[1]);
-    static BTOA_COMMA = JSF.Prop(JSF.Atob(JSF.Stringfy("000s")), JSF[2]);
-    static BTOA_COLON = JSF.Prop(JSF.Atob(JSF.Stringfy("000s")), JSF[2]);
+    static ATOB_EXCLAMATION = JSF.Atob(JSF.Stringfy("If")); //&excl;
+    static ATOB_QUOTATION = JSF.Atob(JSF.Stringfy("000i"), JSF[2]); //&quot;
+    static ATOB_NUMBER = JSF.Atob(JSF.Stringfy("0iN"), JSF[1]); //&num;
+    static ATOB_DOLLAR = JSF.Atob(JSF.Stringfy("0iS"), JSF[1]); //&dollar;
+    static ATOB_PERCENT = JSF.Atob(JSF.Stringfy("000l"), JSF[2]); //&percnt;
+    static ATOB_AMPERSAND = JSF.Atob(JSF.Stringfy("0ia"), JSF[1]); //&amp;
+    static ATOB_APOSTROPHE = JSF.Atob(JSF.Stringfy("000n"), JSF[2]); //&apos;
+    static ATOB_ASTERISK = JSF.Atob(JSF.Stringfy("0ir"), JSF[1]); //&ast;
+    static ATOB_SLASH = JSF.Atob(JSF.Stringfy("000v"), JSF[2]); //&sol;
+    static ATOB_COMMA = JSF.Atob(JSF.Stringfy("000s"), JSF[2]); //&comma;
+    static ATOB_COLON = JSF.Atob(JSF.Stringfy("0006"), JSF[2]); //&colon;
+    static ATOB_SEMI = JSF.Atob(JSF.Stringfy("0007"), JSF[2]); //&semi;
+    static ATOB_LESS = JSF.Atob(JSF.Stringfy("0008"), JSF[2]); //&lt;
+    static ATOB_EQUALS = JSF.Atob(JSF.Stringfy("0009"), JSF[2]); //&equals;
+    static ATOB_GREATER = JSF.Atob(JSF.Join(JSF.Stringfy("000"), JSF._PLUS), JSF[2]); //&gt;
+    static ATOB_QUESTION = JSF.Atob(JSF.Stringfy("0j8"), JSF[1]); //&quest;
+    static ATOB_AT = JSF.Atob(JSF.Stringfy("00A"), JSF[1]); //&commat;
+    static ATOB_BACKSLASH = JSF.Atob(JSF.Stringfy("001c"), JSF[2]); //&bsol;
+    static ATOB_CIRCUMFLEX = JSF.Atob(JSF.Stringfy("014"), JSF[1]); //&Hat;
+    static ATOB_CARET = JSF.ATOB_CIRCUMFLEX; //&Hat;
+    static ATOB_UNDERSCORE = JSF.Atob(JSF.Stringfy("001f"), JSF[2]); //&UnderBar;
+    static ATOB_GRAVE = JSF.Atob(JSF.Stringfy("02A"), JSF[1]); //&grave;
+    static ATOB_BACKTICK = JSF.ATOB_GRAVE; //&grave;
+    static ATOB_VERTICAL = JSF.Atob(JSF.Stringfy("fN")); //&vert;
+    static ATOB_TILDE = JSF.Atob(JSF.Stringfy("ft"));
 
-    // :	A,I,c,g,o,s,0,4,8	6	j	o,r	O	g,i,j,l,m,n,o,r,s,t,u,v
-    // ;	A,I,c,g,o,s,0,4,8	7	j	s,t,u,v	O	y,0,1,2,3,4,5,6,7,8,9,+
-    // <	A,I,c,g,o,s,0,4,8	8	j	y		A,B,F,I,N,O
-    // =	A,I,c,g,o,s,0,4,8	9	j	0,1,2,3		S,a,b,c,d,e,f
-    // >	A,I,c,g,o,s,0,4,8	+	j	4,5,6,7		g,i,j,l,m,n,o,r,s,t,u,v
-    // ?	A,I,c,g,o,s,0,4,8		j	8,9,+		y,0,1,2,3,4,5,6,7,8,9,+
-    // @	B,F,N,d,l,t,1,5,9	A	0	A,B		A,B,F,I,N,O
     // "false0".italics() (Deprecated)
     // "<i>false0</i>" -> "<" ">" "/"
     static __italics = JSF.Stringfy("italics");
@@ -281,7 +299,7 @@ class JSF {
 
     //
     static Atob_000v = JSF.Atob(JSF.Stringfy("000v"));
-    static _Slash = JSF.Prop(JSF.Atob_000v, JSF[2]);
+    static _Slash = JSF.Prop(JSF.Atob_000v, JSF[2]); //&sol;
 
     // static _U2 = JSF.toFunc(JSF.Prop(JSF.Prop(JSF.objObj, JSF.__toString), JSF.__call));
     // toString radix method -> h
@@ -294,6 +312,9 @@ class JSF {
     }
 
     static _h = JSF.Radix(JSF[101], JSF._21, JSF[1]);
+    static _k = JSF.Radix(JSF[20], JSF._21);
+    static _p = JSF.Radix(JSF[211], JSF._31, JSF[1]);
+    static _v = JSF.Radix(JSF[31], JSF._32);
     static _w = JSF.Radix(JSF[32], JSF._33);
     static _x = JSF.Radix(JSF[101], JSF._34, JSF[1]);
     static _z = JSF.Radix(JSF[35], JSF._36);
