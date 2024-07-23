@@ -1,7 +1,7 @@
 var tt, ba, pt, at, as, bs;
 var bs64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 var known = "ABFINOSabcdefgijlmnorstuvy+-.(){}[] 0123456789";
-ba = ["a"];
+ba = ["a", "p+"];
 ab = ["0YQ"];
 // r s j v n
 at = "000v";
@@ -47,16 +47,18 @@ window.onload = () => {
         });
         tt.innerHTML += `<tr><td></td><td></td><td>${kt1}</td><td>${kt2}</td></tr>`;
     });
+    let ascii = Array(32);
     for (let i = 32; i < 127; i++) {
-        as.innerHTML += `<tr ${known.includes(String.fromCharCode(i)) ? "style='background-color:yellow'" : bs64.includes(String.fromCharCode(i)) ? "style='background-color:gray'" : ""}><td>${i}</td><td>${i.toString(4).padStart(4, 0)}</td><td>${String.fromCharCode(i)}</td>
+        ascii.push(String.fromCharCode(i));
+        as.innerHTML += `<tr ${known.includes(String.fromCharCode(i)) ? "style='background-color:yellow'" : bs64.includes(String.fromCharCode(i)) ? "style='background-color:lightgray'" : ""}><td>${i}</td><td>${i.toString(4).padStart(4, 0)}</td><td>${String.fromCharCode(i)}</td>
         ${
             !known.includes(String.fromCharCode(i))
                 ? `<td>${bs64.split("").filter((e, j) => {
-                      if (known.includes(bs64[j]) && i.toString(4).padStart(4, 0).slice(0, 1) == j.toString(4).padStart(3, 0).slice(2, 3)) {
+                      if (known.includes(bs64[j]) && i.toString(4).padStart(4, 0).slice(0, 3) == j.toString(4).padStart(3, 0).slice(0, 3)) {
                           return bs64[j];
                       }
                   })}</td><td>${bs64.split("").filter((e, j) => {
-                      if (known.includes(bs64[j]) && i.toString(4).padStart(4, 0).slice(1, 4) == j.toString(4).padStart(3, 0).slice(0, 3)) {
+                      if (known.includes(bs64[j]) && i.toString(4).padStart(4, 0).slice(3, 4) == j.toString(4).padStart(3, 0).slice(0, 1)) {
                           return bs64[j];
                       }
                   })}</td><td>${bs64.split("").filter((e, j) => {
@@ -68,11 +70,11 @@ window.onload = () => {
                           return bs64[j];
                       }
                   })}</td><td>${bs64.split("").filter((e, j) => {
-                      if (known.includes(bs64[j]) && i.toString(4).padStart(4, 0).slice(0, 3) == j.toString(4).padStart(3, 0).slice(0, 3)) {
+                      if (known.includes(bs64[j]) && i.toString(4).padStart(4, 0).slice(0, 1) == j.toString(4).padStart(3, 0).slice(2, 3)) {
                           return bs64[j];
                       }
                   })}</td><td>${bs64.split("").filter((e, j) => {
-                      if (known.includes(bs64[j]) && i.toString(4).padStart(4, 0).slice(3, 4) == j.toString(4).padStart(3, 0).slice(0, 1)) {
+                      if (known.includes(bs64[j]) && i.toString(4).padStart(4, 0).slice(1, 4) == j.toString(4).padStart(3, 0).slice(0, 3)) {
                           return bs64[j];
                       }
                   })}</td>`
@@ -80,7 +82,36 @@ window.onload = () => {
         }</tr>`;
     }
     for (let i = 0; i < 64; i++) {
-        bs.innerHTML += `<tr ${known.includes(bs64[i]) ? "style='background-color:yellow'" : ""}><td>${i}</td><td>${i.toString(4).padStart(3, 0)}</td><td>${bs64[i]}</td></tr>`;
+        bs.innerHTML += `<tr ${known.includes(bs64[i]) ? "style='background-color:yellow'" : ""}><td>${i}</td><td>${i.toString(4).padStart(3, 0)}</td><td>${bs64[i]}</td>
+        ${
+            !known.includes(bs64[i])
+                ? `<td>${ascii.filter((e, j) => {
+                      if (known.includes(ascii[j]) && i.toString(4).padStart(3, 0).slice(0, 3) == j.toString(4).padStart(4, 0).slice(0, 3)) {
+                          return ascii[j];
+                      }
+                  })}</td><td>${ascii.filter((e, j) => {
+                      if (known.includes(ascii[j]) && i.toString(4).padStart(3, 0).slice(0, 1) == j.toString(4).padStart(4, 0).slice(3, 4)) {
+                          return ascii[j];
+                      }
+                  })}</td><td>${ascii.filter((e, j) => {
+                      if (known.includes(ascii[j]) && i.toString(4).padStart(3, 0).slice(1, 3) == j.toString(4).padStart(4, 0).slice(0, 2)) {
+                          return ascii[j];
+                      }
+                  })}</td><td>${ascii.filter((e, j) => {
+                      if (known.includes(ascii[j]) && i.toString(4).padStart(3, 0).slice(0, 2) == j.toString(4).padStart(4, 0).slice(2, 4)) {
+                          return ascii[j];
+                      }
+                  })}</td><td>${ascii.filter((e, j) => {
+                      if (known.includes(ascii[j]) && i.toString(4).padStart(3, 0).slice(2, 3) == j.toString(4).padStart(4, 0).slice(0, 1)) {
+                          return ascii[j];
+                      }
+                  })}</td><td>${ascii.filter((e, j) => {
+                      if (known.includes(ascii[j]) && i.toString(4).padStart(3, 0).slice(0, 3) == j.toString(4).padStart(4, 0).slice(1, 4)) {
+                          return ascii[j];
+                      }
+                  })}</td>`
+                : ""
+        }</tr>`;
     }
 };
 //undifalstreN

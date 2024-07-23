@@ -248,7 +248,7 @@ class JSF {
     // btoa, atob function
     static __btoa = JSF.Stringfy("btoa");
     static __atob = JSF.Stringfy("atob");
-    // base64 -> ascii
+    // base64 <- ascii
     static Btoa(s0 = "", idx = "") {
         if (idx === "") {
             return JSF.Execution(JSF.__btoa, s0);
@@ -256,7 +256,7 @@ class JSF {
             return JSF.Prop(JSF.Execution(JSF.__btoa, s0), idx);
         }
     }
-    // ascii -> base64
+    // ascii <- base64
     static Atob(s0 = "", idx = "") {
         if (idx === "") {
             return JSF.Execution(JSF.__atob, s0);
@@ -265,7 +265,7 @@ class JSF {
         }
     }
 
-    static ATOB_EXCLAMATION = JSF.Atob(JSF.Stringfy("If")); //&excl;
+    static ATOB_EXCLAMATION = JSF.Atob(JSF.Join(JSF.Stringfy("I"), JSF.false)); //&excl;
     static ATOB_QUOTATION = JSF.Atob(JSF.Stringfy("000i"), JSF[2]); //&quot;
     static ATOB_NUMBER = JSF.Atob(JSF.Stringfy("0iN"), JSF[1]); //&num;
     static ATOB_DOLLAR = JSF.Atob(JSF.Stringfy("0iS"), JSF[1]); //&dollar;
@@ -285,11 +285,51 @@ class JSF {
     static ATOB_BACKSLASH = JSF.Atob(JSF.Stringfy("001c"), JSF[2]); //&bsol;
     static ATOB_CIRCUMFLEX = JSF.Atob(JSF.Stringfy("014"), JSF[1]); //&Hat;
     static ATOB_CARET = JSF.ATOB_CIRCUMFLEX; //&Hat;
-    static ATOB_UNDERSCORE = JSF.Atob(JSF.Stringfy("001f"), JSF[2]); //&UnderBar;
+    static ATOB_UNDERSCORE = JSF.Atob(JSF.Join(JSF.Stringfy("001"), JSF.false), JSF[2]); //&UnderBar;
     static ATOB_GRAVE = JSF.Atob(JSF.Stringfy("02A"), JSF[1]); //&grave;
     static ATOB_BACKTICK = JSF.ATOB_GRAVE; //&grave;
     static ATOB_VERTICAL = JSF.Atob(JSF.Stringfy("fN")); //&vert;
     static ATOB_TILDE = JSF.Atob(JSF.Stringfy("ft"));
+
+    static ATOB_C = JSF.Atob(JSF.Stringfy("00N"), JSF[1]);
+    static ATOB_D = JSF.Atob(JSF.Stringfy("00S"), JSF[1]);
+    static ATOB_E = JSF.Atob(JSF.Stringfy("001F"), JSF[2]);
+    static ATOB_G = JSF.Atob(JSF.Stringfy("00f"), JSF[1]);
+    static ATOB_H = JSF.Atob(JSF.Stringfy("001I"), JSF[2]);
+    static ATOB_J = JSF.Atob(JSF.Stringfy("00r"), JSF[1]);
+    static ATOB_K = JSF.Atob(JSF.Stringfy("00t"), JSF[1]);
+    static ATOB_L = JSF.Atob(JSF.Stringfy("00y"), JSF[1]);
+    static ATOB_M = JSF.Atob(JSF.Stringfy("000"), JSF[1]);
+    static ATOB_P = JSF.Atob(JSF.Stringfy("01A"), JSF[1]);
+    static ATOB_Q = JSF.Atob(JSF.Stringfy("01F"), JSF[1]);
+    static ATOB_R = JSF.Atob(JSF.Stringfy("01I"), JSF[1]);
+    static ATOB_T = JSF.Atob(JSF.Stringfy("01S"), JSF[1]);
+    static ATOB_V = JSF.Atob(JSF.Stringfy("01a"), JSF[1]);
+    static ATOB_W = JSF.Atob(JSF.Stringfy("01f"), JSF[1]);
+    static ATOB_X = JSF.Atob(JSF.Stringfy("01i"), JSF[1]);
+    static ATOB_Y = JSF.Atob(JSF.Stringfy("01n"), JSF[1]);
+    static ATOB_Z = JSF.Atob(JSF.Stringfy("01r"), JSF[1]);
+
+    static ATOB_h = JSF.Atob(JSF.Stringfy("aN"));
+    static ATOB_k = JSF.Atob(JSF.Stringfy("a0"));
+    static ATOB_p = JSF.Atob(JSF.Stringfy("cN"));
+    static ATOB_q = JSF.Atob(JSF.Stringfy("ca"));
+    static ATOB_w = JSF.Atob(JSF.Stringfy("d0"));
+    static ATOB_x = JSF.Atob(JSF.Stringfy("eN"));
+    static ATOB_z = JSF.Atob(JSF.Stringfy("et"));
+
+    static BTOA_C = JSF.Btoa(JSF.Join(JSF[0], JSF._LPAR));
+    static BTOA_D = JSF.Btoa(JSF.Stringfy("00"));
+    static BTOA_E = JSF.Btoa(JSF.Stringfy("01"));
+    static BTOA_G = JSF.Btoa(JSF.Join(JSF.Stringfy("0"), JSF.false));
+    static BTOA_H = JSF.Btoa(JSF.Stringfy("0t"));
+    static BTOA_J = JSF.Btoa(JSF.Join(JSF.Stringfy("02"), JSF.false));
+    static BTOA_K = JSF.Btoa(JSF._PLUS);
+    static BTOA_L = JSF.Btoa(JSF._PERIOD);
+    static BTOA_M = JSF.Btoa(JSF[0]);
+    static BTOA_P = JSF.Btoa(JSF.Stringfy("00O"));
+    static BTOA_Q = JSF.Btoa(JSF[1]);
+    static BTOA_R = JSF.Btoa(JSF.Join(JSF.Stringfy("0t"), JSF.false));
 
     // "false0".italics() (Deprecated)
     // "<i>false0</i>" -> "<" ">" "/"
@@ -339,7 +379,7 @@ window.onload = () => {
             return typeof JSF[arg] !== "function" && JSF[arg].length !== undefined && JSF[arg] !== "JSF" && arg[0] !== "j";
         });
         ba.forEach((arg) => {
-            tt.innerHTML += `<tr><td>${arg}</td><td><xmp>"${eval(JSF[arg])}"</xmp></td><td>${JSF[arg]}</td><td>${JSF[arg].length}</td></tr>`;
+            tt.innerHTML += `<tr id="${arg}"><td>${arg}</td><td><xmp>"${eval(JSF[arg])}"</xmp></td><td class="jsf">${JSF[arg]}</td><td>${JSF[arg].length}</td></tr>`;
         });
         pt.innerHTML += Object.getOwnPropertyNames(JSF).sort();
     } catch (error) {
