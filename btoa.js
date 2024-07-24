@@ -1,6 +1,6 @@
 var tt, ba, pt, at, as, bs;
 var bs64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-var known = "ABFINOSabcdefgijlmnorstuvy+-.(){}[] 0123456789";
+var known = "ABEFHILNORSTWabcdefgijlmnorstuvwy+-.(){}[] 0123456789";
 ba = ["a", "p+"];
 ab = ["0YQ"];
 // r s j v n
