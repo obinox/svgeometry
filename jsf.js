@@ -36,7 +36,7 @@ class JSF {
     static Stringify(s0 = "") {
         return JSF.Join(
             ...s0.split("").map((s1, i0) => {
-                return !isNaN(parseInt(s1)) ? (i0 == 0 ? JSF[s1] : JSF.toArr(JSF[s1])) : JSF[`_${s1}`];
+                return !isNaN(parseInt(s1)) ? (i0 == 0 ? JSF[s1] : JSF.toArr(JSF[s1])) : JSF[s1] != undefined ? JSF[s1] : JSF["_" + s1];
             })
         );
     }
@@ -116,20 +116,19 @@ class JSF {
     // 1.1e+21 -> "."
     // 1e-7 -> "-"
     static Infinity = JSF.toNum(JSF.toObj(JSF.Stringify("1e1000")));
-    static _1e100 = JSF.toNum(JSF.toObj(JSF.Stringify("1e100")));
-    static _11e21 = JSF.toNum(JSF.toObj(JSF.Stringify("11e20")));
-
     static _I = JSF.Prop(JSF.toStr(JSF.Infinity), JSF[0]);
     static _y = JSF.Prop(JSF.Join(JSF.NaN, JSF.toArr(JSF.Infinity)), JSF[10]);
 
+    static _1e100 = JSF.toNum(JSF.toObj(JSF.Stringify("1e100")));
     static _PLUS = JSF.Prop(JSF.toStr(JSF._1e100), JSF[2]); //&plus;
+
+    static _11e21 = JSF.toNum(JSF.toObj(JSF.Stringify("11e20")));
     static _PERIOD = JSF.Prop(JSF.toStr(JSF._11e21), JSF[1]); //&period;
 
     static _1e7 = JSF.toNum(JSF.toObj(JSF.Join(JSF._PERIOD, JSF.toObj(JSF.Stringify("0000001")))));
-
     static _MINUS = JSF.Prop(JSF.toStr(JSF._1e7), JSF[2]); //&minus;
 
-    // Array instance method
+    // Array.prototype.at
     static __at = JSF.Join(JSF._a, JSF._t);
     static At = JSF.Prop(JSF.array, JSF.__at);
     // function at() { [native code] } -> "c" "o" "v"
@@ -163,25 +162,19 @@ class JSF {
     static __self = JSF.Stringify("self");
     static __return = JSF.Stringify("return");
 
+    // "f,a,l,s,e" -> ","
+    // []["flat"]["call"]("false")[1]
     static __flat = JSF.Stringify("flat");
-    static __fill = JSF.Stringify("fill");
-    static __find = JSF.Stringify("find");
-    static __filter = JSF.Stringify("filter");
-    static __function = JSF.Stringify("function");
     static __call = JSF.Stringify("call");
-    static __concat = JSF.Stringify("concat");
-
-    static __finally = JSF.Stringify("finally");
-    static __if = JSF.Stringify("if");
-    static __else = JSF.Stringify("else");
-    static __for = JSF.Stringify("for");
-
-    static _COMMA = JSF.Prop(JSF.toStr(JSF.toFunc(JSF.Prop(JSF.Prop(JSF.array, JSF.__flat), JSF.__call), JSF.toStr(JSF.false))), JSF[1]);
+    static CALL_COMMA = JSF.Prop(JSF.toStr(JSF.toFunc(JSF.Prop(JSF.Prop(JSF.array, JSF.__flat), JSF.__call), JSF.toStr(JSF.false))), JSF[1]);
 
     // execute function
     // []["at"]["constructor"]("f0")() -> (() => {f0})()
     static Anonymous(f0 = "") {
         return JSF.toFunc(JSF.toFunc(JSF.Prop(JSF.Prop(JSF.array, JSF.__at), JSF.__constructor), f0));
+    }
+    static AnonymousDebug(f0 = "") {
+        return JSF.toFunc(JSF.Prop(JSF.Prop(JSF.array, JSF.__at), JSF.__constructor), f0);
     }
     // retrun value
     // []["at"]["constructor"]("return f0")() -> f0
@@ -200,7 +193,6 @@ class JSF {
     static Object = JSF.Return(JSF.jBrc, true);
     static Window = JSF.Return(JSF.__self);
     static Iterator = JSF.toFunc(JSF.Prop(JSF.array, JSF.__entries));
-    static HTMLRow = JSF.Prop(JSF.Window, JSF.false);
 
     static OBJECT_O = JSF.Prop(JSF.Join(JSF.NaN, JSF.Object), JSF[11]);
     static OBJECT_W = JSF.Prop(JSF.Join(JSF.NaN, JSF.Window), JSF[11]);
@@ -208,25 +200,17 @@ class JSF {
     static OBJECT_b = JSF.Prop(JSF.toStr(JSF.Iterator), JSF[2]);
     static OBJECT_j = JSF.Prop(JSF.toStr(JSF.Iterator), JSF[3]);
     static OBJECT_A = JSF.Prop(JSF.Join(JSF.NaN, JSF.Iterator), JSF[11]);
-    static OBJECT_H = JSF.Prop(JSF.Join(JSF.NaN, JSF.HTMLRow), JSF[11]);
-    static OBJECT_T = JSF.Prop(JSF.Join(JSF[0], JSF.HTMLRow), JSF[10]);
-    static OBJECT_M = JSF.Prop(JSF.toStr(JSF.HTMLRow), JSF[10]);
-    static OBJECT_L = JSF.Prop(JSF.toStr(JSF.HTMLRow), JSF[11]);
-    static OBJECT_R = JSF.Prop(JSF.Join(JSF.NaN, JSF.HTMLRow), JSF[20]);
-    static OBJECT_E = JSF.Prop(JSF.toStr(JSF.HTMLRow), JSF[20]);
 
-    static _O = JSF.OBJECT_O;
-    static _W = JSF.OBJECT_W;
-    static _w = JSF.OBJECT_w;
-    static _b = JSF.OBJECT_b;
-    static _j = JSF.OBJECT_j;
-    static _A = JSF.OBJECT_A;
-    static _H = JSF.OBJECT_H;
-    static _T = JSF.OBJECT_T;
-    static _M = JSF.OBJECT_M;
-    static _L = JSF.OBJECT_L;
-    static _R = JSF.OBJECT_R;
-    static _E = JSF.OBJECT_E;
+    // *Occurs only under certain conditions*
+    // static HTMLRow = JSF.Prop(JSF.Window, JSF.false);
+    // static OBJECT_H = JSF.Prop(JSF.Join(JSF.NaN, JSF.HTMLRow), JSF[11]);
+    // static OBJECT_T = JSF.Prop(JSF.Join(JSF[0], JSF.HTMLRow), JSF[10]);
+    // static OBJECT_M = JSF.Prop(JSF.toStr(JSF.HTMLRow), JSF[10]);
+    // static OBJECT_L = JSF.Prop(JSF.toStr(JSF.HTMLRow), JSF[11]);
+    // static OBJECT_R = JSF.Prop(JSF.Join(JSF.NaN, JSF.HTMLRow), JSF[20]);
+    // static OBJECT_E = JSF.Prop(JSF.toStr(JSF.HTMLRow), JSF[20]);
+
+    static wwwin = JSF.Prop(JSF.Window, JSF.__at);
 
     // array constructor -> Array Object
     // number constructor -> Number Object -> "m"
@@ -239,16 +223,19 @@ class JSF {
     static Boolean = JSF.Prop(JSF.boolean, JSF.__constructor);
     static Function = JSF.Prop(JSF.At, JSF.__constructor);
 
+    static FUNC_LINEFEED = JSF.Prop(JSF.Join(JSF[0], JSF.toFunc(JSF.Function)), JSF[20]);
     static OBJECT_m = JSF.Prop(JSF.toStr(JSF.Number), JSF[11]);
     static OBJECT_S = JSF.Prop(JSF.Join(JSF[0], JSF.String), JSF[10]);
     static OBJECT_g = JSF.Prop(JSF.Join(JSF.false0, JSF.String), JSF[20]);
     static OBJECT_B = JSF.Prop(JSF.Join(JSF[0], JSF.Boolean), JSF[10]);
     static OBJECT_F = JSF.Prop(JSF.Join(JSF[0], JSF.Function), JSF[10]);
 
+    static _O = JSF.OBJECT_O;
+    static _b = JSF.OBJECT_b;
+    static _j = JSF.OBJECT_j;
+    static _A = JSF.OBJECT_A;
     static _m = JSF.OBJECT_m;
     static _S = JSF.OBJECT_S;
-    static _g = JSF.OBJECT_g;
-    static _B = JSF.OBJECT_B;
     static _F = JSF.OBJECT_F;
 
     // (String).name -> "String"
@@ -313,22 +300,27 @@ class JSF {
     static ATOB_QUESTION = JSF.Atob(JSF.Stringify("0j8"), JSF[1]); //&quest;
     static ATOB_AT = JSF.Atob(JSF.Stringify("00A"), JSF[1]); //&commat;
     static ATOB_BACKSLASH = JSF.Atob(JSF.Stringify("001c"), JSF[2]); //&bsol;
-    static ATOB_CIRCUMFLEX = JSF.Atob(JSF.Join(JSF.undefined, JSF.toArr(JSF.false)), JSF[2]); //&Hat;
-    static ATOB_CARET = JSF.ATOB_CIRCUMFLEX; //&Hat;
+    static ATOB_CARET = JSF.Atob(JSF.Join(JSF.undefined, JSF.toArr(JSF.false)), JSF[2]); //&Hat;
     static ATOB_UNDERSCORE = JSF.Atob(JSF.Join(JSF.NaN, JSF.toArr(JSF.false)), JSF[2]); //&UnderBar;
     static ATOB_GRAVE = JSF.Atob(JSF.Stringify("02A"), JSF[1]); //&grave;
-    static ATOB_BACKTICK = JSF.ATOB_GRAVE; //&grave;
     static ATOB_VERTICAL = JSF.Atob(JSF.Join(JSF._f, JSF.toArr(JSF.NaN)), JSF[0]); //&vert;
     static ATOB_TILDE = JSF.Atob(JSF.Join(JSF._f, JSF.undefined), JSF[0]);
 
-    static ATOB_C = JSF.Atob(JSF.Join(JSF.Stringify("00"), JSF.toArr(JSF.NaN), JSF.false), JSF[1]);
+    static ATOB_C = JSF.Atob(JSF.Join(JSF.Stringify("00"), JSF.toObj(JSF.NaN), JSF.false), JSF[1]);
     static ATOB_D = JSF.Atob(JSF.Stringify("00S"), JSF[1]);
-    static ATOB_G = JSF.Atob(JSF.Join(JSF.Stringify("00"), JSF.toArr(JSF.false)), JSF[1]);
+    static ATOB_E = JSF.Atob(JSF.Stringify("001F"), JSF[2]);
+    static ATOB_G = JSF.Atob(JSF.Join(JSF.Stringify("00"), JSF.false), JSF[1]);
+    static ATOB_H = JSF.Atob(JSF.Join(JSF.Stringify("001"), JSF.toObj(JSF.Infinity)), JSF[2]);
     static ATOB_J = JSF.Atob(JSF.Stringify("00r"), JSF[1]);
     static ATOB_K = JSF.Atob(JSF.Join(JSF.Stringify("00"), JSF.true), JSF[1]);
+    static ATOB_L = JSF.Atob(JSF.Stringify("00y"), JSF[1]);
+    static ATOB_M = JSF.Atob(JSF.Stringify("000"), JSF[1]);
     static ATOB_P = JSF.Atob(JSF.Stringify("01A"), JSF[1]);
     static ATOB_Q = JSF.Atob(JSF.Stringify("01F"), JSF[1]);
+    static ATOB_R = JSF.Atob(JSF.Join(JSF.Stringify("01"), JSF.toObj(JSF.Infinity)), JSF[1]);
+    static ATOB_T = JSF.Atob(JSF.Stringify("01S"), JSF[1]);
     static ATOB_V = JSF.Atob(JSF.Stringify("01a"), JSF[1]);
+    static ATOB_W = JSF.Atob(JSF.Join(JSF.Stringify("01"), JSF.false), JSF[1]);
     static ATOB_X = JSF.Atob(JSF.Stringify("01i"), JSF[1]);
     static ATOB_Y = JSF.Atob(JSF.Stringify("01n"), JSF[1]);
     static ATOB_Z = JSF.Atob(JSF.Stringify("01r"), JSF[1]);
@@ -345,13 +337,21 @@ class JSF {
 
     static BTOA_C = JSF.Btoa(JSF.Join(JSF[0], JSF._LPAR), JSF[1]);
     static BTOA_D = JSF.Btoa(JSF.Stringify("00"), JSF[1]);
+    static BTOA_E = JSF.Btoa(JSF.Stringify("01"), JSF[2]);
+    // static BTOA_E = JSF.Btoa(JSF.Join(JSF.toStr(JSF[0]), JSF.toObj(JSF.NaN)), JSF[1]); <-same length
     static BTOA_G = JSF.Btoa(JSF.Join(JSF.toArr(JSF[0]), JSF.false), JSF[1]);
+    static BTOA_H = JSF.Btoa(JSF.true, JSF[1]);
     static BTOA_J = JSF.Btoa(JSF.true, JSF[2]);
     static BTOA_K = JSF.Btoa(JSF._PLUS, JSF[0]);
-    static BTOA_P = JSF.Btoa(JSF.Stringify("00O"), JSF[3]);
+    static BTOA_L = JSF.Btoa(JSF._PERIOD, JSF[0]);
+    static BTOA_M = JSF.Btoa(JSF[0], JSF[0]);
+    static BTOA_P = JSF.Btoa(JSF.Object, JSF[11]);
     static BTOA_Q = JSF.Btoa(JSF[1], JSF[1]);
+    static BTOA_R = JSF.Btoa(JSF.Join(JSF.toArr(JSF[0]), JSF.true), JSF[2]);
+    static BTOA_T = JSF.Btoa(JSF.NaN, JSF[0]);
     static BTOA_U = JSF.Btoa(JSF.Join(JSF[1], JSF.toArr(JSF.NaN)), JSF[1]);
     static BTOA_V = JSF.Btoa(JSF.undefined, JSF[10]);
+    static BTOA_W = JSF.Btoa(JSF.undefined, JSF[1]);
     static BTOA_X = JSF.Btoa(JSF.Join(JSF.toArr(JSF[1]), JSF.true), JSF[1]);
     static BTOA_Y = JSF.Btoa(JSF._a, JSF[0]);
     static BTOA_Z = JSF.Btoa(JSF.false, JSF[0]);
@@ -371,8 +371,6 @@ class JSF {
     static RADIX_x = JSF.Radix(JSF[101], JSF[34], JSF[1]);
     static RADIX_z = JSF.Radix(JSF[35], JSF[36]);
 
-    static _h = JSF.BTOA_h;
-
     // "string".italics() (Deprecated)
     // "<i>string</i>" -> "<" ">" "/"
     // "string".fontcolor() (Deprecated)
@@ -384,10 +382,10 @@ class JSF {
     static Italics_PAD = JSF.toFunc(JSF.Prop(JSF.false0, JSF.__italics));
     static __fontcolor = JSF.Stringify("fontcolor");
     static Fontcolor = JSF.toFunc(JSF.Prop(JSF.string, JSF.__fontcolor));
-    static Fontcolor_EMPTY = JSF.toFunc(JSF.Prop(JSF.string, JSF.__fontcolor), JSF.array);
-    static Fontcolor_REC = JSF.toFunc(JSF.Prop(JSF.string, JSF.__fontcolor), JSF.Fontcolor);
-    static Fontcolor_TRUEREC = JSF.toFunc(JSF.Prop(JSF.string, JSF.__fontcolor), JSF.Join(JSF.true, JSF.Fontcolor));
-    static Fontcolor_EMPTYREC = JSF.toFunc(JSF.Prop(JSF.string, JSF.__fontcolor), JSF.Fontcolor_EMPTY);
+    static Fontcolor_Empty = JSF.toFunc(JSF.Prop(JSF.string, JSF.__fontcolor), JSF.array);
+    static Fontcolor_Font = JSF.toFunc(JSF.Prop(JSF.string, JSF.__fontcolor), JSF.Fontcolor);
+    static Fontcolor_True_Font = JSF.toFunc(JSF.Prop(JSF.string, JSF.__fontcolor), JSF.Join(JSF.true, JSF.Fontcolor));
+    static Fontcolor_Empty_Font = JSF.toFunc(JSF.Prop(JSF.string, JSF.__fontcolor), JSF.Fontcolor_Empty);
 
     static ITALICS_LESS = JSF.Prop(JSF.Italics, JSF[0]);
     static ITALICS_GREATER = JSF.Prop(JSF.Italics, JSF[2]);
@@ -395,17 +393,146 @@ class JSF {
 
     static FONT_EQUALS = JSF.Prop(JSF.Fontcolor, JSF[11]);
     static FONT_QUOTATION = JSF.Prop(JSF.Fontcolor, JSF[12]);
-    static FONT_AMPERSAND = JSF.Prop(JSF.Fontcolor_EMPTYREC, JSF[31]);
-    static FONT_SEMI = JSF.Prop(JSF.Fontcolor_REC, JSF[30]);
-    static FONT_q = JSF.Prop(JSF.Fontcolor_TRUEREC, JSF[30]);
+    static FONT_AMPERSAND = JSF.Prop(JSF.Fontcolor_Empty_Font, JSF[31]);
+    static FONT_SEMI = JSF.Prop(JSF.Fontcolor_Font, JSF[30]);
+    static FONT_q = JSF.Prop(JSF.Fontcolor_True_Font, JSF[30]);
+
+    static Compare(s0 = "") {
+        let props = Object.getOwnPropertyNames(JSF).filter((arg) => {
+            return typeof JSF[arg] !== "function" && JSF[arg].length !== undefined && arg.endsWith("_" + s0);
+        });
+        if (props.length > 0) {
+            return props
+                .map((e) => {
+                    return JSF[e];
+                })
+                .sort((a, b) => a.length - b.length)[0];
+        } else {
+            return "";
+        }
+    }
+
+    static ["\n"] = JSF.Compare("LINEFEED");
+    static [" "] = JSF.Compare("SPACE");
+    static ["!"] = JSF.Compare("EXCLAMATION");
+    static ['"'] = JSF.Compare("QUOTATION");
+    static ["#"] = JSF.Compare("NUMBER");
+    static ["$"] = JSF.Compare("DOLLAR");
+    static ["%"] = JSF.Compare("PERCENT");
+    static ["&"] = JSF.Compare("AMPERSAND");
+    static ["'"] = JSF.Compare("APOSTROPHE");
+    static ["("] = JSF.Compare("LPAR");
+    static [")"] = JSF.Compare("RPAR");
+    static ["*"] = JSF.Compare("ASTERISK");
+    static ["+"] = JSF.Compare("PLUS");
+    static [","] = JSF.Compare("COMMA");
+    static ["-"] = JSF.Compare("MINUS");
+    static ["."] = JSF.Compare("PERIOD");
+    static ["/"] = JSF.Compare("SLASH");
+    // static ["0"] = "";
+    // static ["1"] = "";
+    // static ["2"] = "";
+    // static ["3"] = "";
+    // static ["4"] = "";
+    // static ["5"] = "";
+    // static ["6"] = "";
+    // static ["7"] = "";
+    // static ["8"] = "";
+    // static ["9"] = "";
+    static [":"] = JSF.Compare("COLON");
+    static [";"] = JSF.Compare("SEMI");
+    static ["<"] = JSF.Compare("LESS");
+    static ["="] = JSF.Compare("EQUALS");
+    static [">"] = JSF.Compare("GREATER");
+    static ["?"] = JSF.Compare("QUESTION");
+    static ["@"] = JSF.Compare("AT");
+    static ["A"] = JSF.Compare("A");
+    static ["B"] = JSF.Compare("B");
+    static ["C"] = JSF.Compare("C");
+    static ["D"] = JSF.Compare("D");
+    static ["E"] = JSF.Compare("E");
+    static ["F"] = JSF.Compare("F");
+    static ["G"] = JSF.Compare("G");
+    static ["H"] = JSF.Compare("H");
+    static ["I"] = JSF.Compare("I");
+    static ["J"] = JSF.Compare("J");
+    static ["K"] = JSF.Compare("K");
+    static ["L"] = JSF.Compare("L");
+    static ["M"] = JSF.Compare("M");
+    static ["N"] = JSF.Compare("N");
+    static ["O"] = JSF.Compare("O");
+    static ["P"] = JSF.Compare("P");
+    static ["Q"] = JSF.Compare("Q");
+    static ["R"] = JSF.Compare("R");
+    static ["S"] = JSF.Compare("S");
+    static ["T"] = JSF.Compare("T");
+    static ["U"] = JSF.Compare("U");
+    static ["V"] = JSF.Compare("V");
+    static ["W"] = JSF.Compare("W");
+    static ["X"] = JSF.Compare("X");
+    static ["Y"] = JSF.Compare("Y");
+    static ["Z"] = JSF.Compare("Z");
+    static ["["] = JSF.Compare("LBRK");
+    static ["\\"] = JSF.Compare("BACKSLASH");
+    static ["]"] = JSF.Compare("RBRK");
+    static ["^"] = JSF.Compare("CARET");
+    static ["_"] = JSF.Compare("UNDERSCORE");
+    static ["`"] = JSF.Compare("GRAVE");
+    static ["a"] = JSF.Compare("a");
+    static ["b"] = JSF.Compare("b");
+    static ["c"] = JSF.Compare("c");
+    static ["d"] = JSF.Compare("d");
+    static ["e"] = JSF.Compare("e");
+    static ["f"] = JSF.Compare("f");
+    static ["g"] = JSF.Compare("g");
+    static ["h"] = JSF.Compare("h");
+    static ["i"] = JSF.Compare("i");
+    static ["j"] = JSF.Compare("j");
+    static ["k"] = JSF.Compare("k");
+    static ["l"] = JSF.Compare("l");
+    static ["m"] = JSF.Compare("m");
+    static ["n"] = JSF.Compare("n");
+    static ["o"] = JSF.Compare("o");
+    static ["p"] = JSF.Compare("p");
+    static ["q"] = JSF.Compare("q");
+    static ["r"] = JSF.Compare("r");
+    static ["s"] = JSF.Compare("s");
+    static ["t"] = JSF.Compare("t");
+    static ["u"] = JSF.Compare("u");
+    static ["v"] = JSF.Compare("v");
+    static ["w"] = JSF.Compare("w");
+    static ["x"] = JSF.Compare("x");
+    static ["y"] = JSF.Compare("y");
+    static ["z"] = JSF.Compare("z");
+    static ["{"] = JSF.Compare("LBRC");
+    static ["|"] = JSF.Compare("VERTICAL");
+    static ["}"] = JSF.Compare("RBRC");
+    static ["~"] = JSF.Compare("TILDE");
+    // static ["\u{007E}"] = JSF.Compare("TILDE");
 
     static __try = JSF.Stringify("try");
     static __catch = JSF.Stringify("catch");
+    static __fill = JSF.Stringify("fill");
+    static __find = JSF.Stringify("find");
+    static __filter = JSF.Stringify("filter");
+    static __function = JSF.Stringify("function");
+    static __concat = JSF.Stringify("concat");
+    static __finally = JSF.Stringify("finally");
+    static __if = JSF.Stringify("if");
+    static __else = JSF.Stringify("else");
+    static __for = JSF.Stringify("for");
+    static __big = JSF.Stringify("big");
+    static __fromCharCode = JSF.Stringify("fromCharCode");
+    static __fromCodePoint = JSF.Stringify("fromCodePoint");
 
     static Error(s0 = "") {
-        return JSF.Anonymous(JSF.Join(JSF.__try, JSF.toBrc(s0), JSF.__catch, JSF.toPar(JSF._f), JSF.toBrc(JSF.Join(JSF.__return, JSF._SPACE, JSF._f))));
+        return JSF.Anonymous(JSF.Join(JSF.__try, JSF.toBrc(s0), JSF.__catch, JSF.toPar(JSF._f), JSF.toBrc(JSF.Join(JSF.__return, JSF.Stringify(" f")))));
     }
-    static error = JSF.Error(JSF._t);
+    static ErrorDebug(s0 = "") {
+        return JSF.AnonymousDebug(JSF.Join(JSF.__try, JSF.toBrc(s0), JSF.__catch, JSF.toPar(JSF._f), JSF.toBrc(JSF.Join(JSF.__return, JSF.Stringify(" f")))));
+    }
+    static error = JSF.Error(JSF.Stringify("f0"));
+    static error2 = JSF.ErrorDebug(JSF.Stringify("ft"));
 
     // static __values = JSF.Join(JSF._v, JSF._a, JSF._l, JSF._u, JSF._e, JSF._s);
 }
@@ -414,6 +541,7 @@ var tt, ba, pt;
 window.onload = () => {
     try {
         tt = document.getElementById("text");
+
         pt = document.getElementById("props");
         ba = Object.getOwnPropertyNames(JSF).filter((arg) => {
             return typeof JSF[arg] !== "function" && JSF[arg].length !== undefined && JSF[arg] !== "JSF" && arg[0] !== "j";
@@ -432,3 +560,4 @@ console.log(v);
 console.log(eval(v));
 
 console.log(typeof eval(v));
+d;
