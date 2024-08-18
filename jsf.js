@@ -143,121 +143,123 @@ class CORE {
     static #_MINUS = this.Prop(this.toStr(this._1e7), this[2]); //&minus;
 
     // Array.prototype.at
-    static __at = this.Join(this._a, this._t);
-    static At = this.Prop(this.array, this.__at);
+    static #__at = this.Join(this._a, this._t);
+    static #At = this.Prop(this.array, this.__at);
     // function at() { [native code] } -> "c" "o" "v"
     // function at() { [native code] } -> " " "(" ")" "[" "]" "{" "}"
-    static _c = this.Prop(this.toStr(this.At), this[3]);
-    static _o = this.Prop(this.Join(this.true, this.At), this[10]);
-    static _v = this.Prop(this.toStr(this.At), this[21]);
+    static #_c = this.Prop(this.toStr(this.At), this[3]);
+    static #_o = this.Prop(this.Join(this.true, this.At), this[10]);
+    static #_v = this.Prop(this.toStr(this.At), this[21]);
 
-    static _SPACE = this.Prop(this.Join(this.false, this.At), this[20]); //&nbsp;
-    static _LPAR = this.Prop(this.toStr(this.At), this[11]); //&lpar;
-    static _RPAR = this.Prop(this.toStr(this.At), this[12]); //&rpar;
-    static _LBRK = this.Prop(this.Join(this.true, this.At), this[20]); //&lbrack; &lsqb;
-    static _RBRK = this.Prop(this.Join(this.NaN, this.At), this[31]); //&rbrack; &rsqb;
-    static _LBRC = this.Prop(this.Join(this.false0, this.At), this[20]); //&lbrace; &lcub;
-    static _RBRC = this.Prop(this.toStr(this.At), this[30]); //&rbrace; &rcub;
-    static _BRC = this.Join(this._LBRC, this._RBRC);
+    static #_SPACE = this.Prop(this.Join(this.false, this.At), this[20]); //&nbsp;
+    // static #_SPACE = this.Prop(this.Join(this.NaN, this.At), this[11]); // in firefox;
+    static #_LPAR = this.Prop(this.toStr(this.At), this[11]); //&lpar;
+    static #_RPAR = this.Prop(this.toStr(this.At), this[12]); //&rpar;
+    static #_LBRK = this.Prop(this.Join(this.true, this.At), this[20]); //&lbrack; &lsqb;
+    static #_RBRK = this.Prop(this.Join(this.NaN, this.At), this[31]); //&rbrack; &rsqb;
+    static #_LBRC = this.Prop(this.Join(this.false0, this.At), this[20]); //&lbrace; &lcub;
+    static #_RBRC = this.Prop(this.toStr(this.At), this[30]); //&rbrace; &rcub;
+    // static #_RBRC = this.toFunc(this.Prop(this.toStr(this.At), this.__at), this.Join(this._MINUS, this.toArr(this[1]))); // in firefox
+    static #_BRC = this.Join(this._LBRC, this._RBRC);
 
     // "($0)"
-    static toPar($0) {
+    static #toPar($0) {
         return this.Join(this._LPAR, $0, this._RPAR);
     }
     // "{$0}"
-    static toBrc($0) {
+    static #toBrc($0) {
         return this.Join(this._LBRC, $0, this._RBRC);
     }
 
-    static __constructor = this.Strify("constructor");
-    static __entries = this.Strify("entries");
-    static __self = this.Strify("self");
-    static __return = this.Strify("return");
+    static #__constructor = this.Strify("constructor");
+    static #__entries = this.Strify("entries");
+    static #__self = this.Strify("self");
+    static #__return = this.Strify("return");
 
     // "f,a,l,s,e" -> ","
     // []["flat"]["call"]("false")[1]
-    static __flat = this.Strify("flat");
-    static __call = this.Strify("call");
-    static CALL_COMMA = this.Prop(this.toStr(this.toFunc(this.Prop(this.Prop(this.array, this.__flat), this.__call), this.toStr(this.false))), this[1]);
+    static #__flat = this.Strify("flat");
+    static #__call = this.Strify("call");
+    static #CALL_COMMA = this.Prop(this.toStr(this.toFunc(this.Prop(this.Prop(this.array, this.__flat), this.__call), this.toStr(this.false))), this[1]);
 
     // execute function
     // []["at"]["constructor"]("$0")() -> (() => {$0})()
-    static Anonymous($0) {
+    static #Anonymous($0) {
         return this.toFunc(this.toFunc(this.Prop(this.Prop(this.array, this.__at), this.__constructor), $0));
     }
-    static AnonymousDebug($0) {
+    static #AnonymousDebug($0) {
         return this.toFunc(this.Prop(this.Prop(this.array, this.__at), this.__constructor), $0);
     }
+
     // retrun value
     // []["at"]["constructor"]("return $0")() -> $0
-    static Return($0, $SP = false) {
+    static #Return($0, $SP = false) {
         return this.Anonymous(this.Join(this.__return, ...($SP ? [$0] : [this._SPACE, $0])));
     }
     // Run function []["at"]["constructor"]("return $0")()("$1") -> $0($1)
-    static Execution($0, $1) {
+    static #Execution($0, $1) {
         return this.toFunc(this.Return($0), $1);
     }
 
     // [object Object] -> "O"
     // [object Window] -> "W" "w"
     // [object Array Iterator] -> "b" "j" "A"
-    // [object HTMLTableRowElement] -> "H" "T" "M" "L" "R"
-    static Object = this.Return(this._BRC, true);
-    static Window = this.Return(this.__self);
-    static Iterator = this.toFunc(this.Prop(this.array, this.__entries));
+    static #Object = this.Return(this._BRC, true);
+    static #Window = this.Return(this.__self);
+    static #Iterator = this.toFunc(this.Prop(this.array, this.__entries));
 
-    static OBJECT_O = this.Prop(this.Join(this.NaN, this.Object), this[11]);
-    static OBJECT_W = this.Prop(this.Join(this.NaN, this.Window), this[11]);
-    static OBJECT_w = this.Prop(this.toStr(this.Window), this[13]);
-    static OBJECT_b = this.Prop(this.toStr(this.Iterator), this[2]);
-    static OBJECT_j = this.Prop(this.toStr(this.Iterator), this[3]);
-    static OBJECT_A = this.Prop(this.Join(this.NaN, this.Iterator), this[11]);
+    static #OBJECT_O = this.Prop(this.Join(this.NaN, this.Object), this[11]);
+    static #OBJECT_W = this.Prop(this.Join(this.NaN, this.Window), this[11]);
+    static #OBJECT_w = this.Prop(this.toStr(this.Window), this[13]);
+    static #OBJECT_b = this.Prop(this.toStr(this.Iterator), this[2]);
+    static #OBJECT_j = this.Prop(this.toStr(this.Iterator), this[3]);
+    static #OBJECT_A = this.Prop(this.Join(this.NaN, this.Iterator), this[11]);
 
     // array constructor -> Array Object
     // number constructor -> Number Object -> "m"
     // string constructor -> String Object -> "S" "g"
     // boolean constructor -> Boolean Object -> "B"
     // function constructor -> Function Object -> "F"
-    static Array = this.Prop(this.array, this.__constructor);
-    static Number = this.Prop(this.number, this.__constructor);
-    static String = this.Prop(this.string, this.__constructor);
-    static Boolean = this.Prop(this.boolean, this.__constructor);
-    static Function = this.Prop(this.At, this.__constructor);
+    static #Array = this.Prop(this.array, this.__constructor);
+    static #Number = this.Prop(this.number, this.__constructor);
+    static #String = this.Prop(this.string, this.__constructor);
+    static #Boolean = this.Prop(this.boolean, this.__constructor);
+    static #Function = this.Prop(this.At, this.__constructor);
 
-    static CONST_LINEFEED = this.Prop(this.Join(this[0], this.toFunc(this.Function)), this[20]);
-    static CONST_m = this.Prop(this.toStr(this.Number), this[11]);
-    static CONST_S = this.Prop(this.Join(this[0], this.String), this[10]);
-    static CONST_g = this.Prop(this.Join(this.false0, this.String), this[20]);
-    static CONST_B = this.Prop(this.Join(this[0], this.Boolean), this[10]);
-    static CONST_F = this.Prop(this.Join(this[0], this.Function), this[10]);
+    static #CONST_LINEFEED = this.Prop(this.Join(this[0], this.toFunc(this.Function)), this[20]);
+    static #CONST_m = this.Prop(this.toStr(this.Number), this[11]);
+    static #CONST_S = this.Prop(this.Join(this[0], this.String), this[10]);
+    static #CONST_g = this.Prop(this.Join(this.false0, this.String), this[20]);
+    static #CONST_B = this.Prop(this.Join(this[0], this.Boolean), this[10]);
+    static #CONST_F = this.Prop(this.Join(this[0], this.Function), this[10]);
 
-    static _O = this.OBJECT_O;
-    static _b = this.OBJECT_b;
-    static _j = this.OBJECT_j;
-    static _A = this.OBJECT_A;
-    static _m = this.CONST_m;
-    static _g = this.CONST_g;
-    static _S = this.CONST_S;
-    static _F = this.CONST_F;
+    static #_O = this.OBJECT_O;
+    static #_b = this.OBJECT_b;
+    static #_j = this.OBJECT_j;
+    static #_A = this.OBJECT_A;
+    static #_m = this.CONST_m;
+    static #_g = this.CONST_g;
+    static #_S = this.CONST_S;
+    static #_F = this.CONST_F;
 
     // (String).name -> "String"
     // "to" + "String" -> "toString"
-    static __name = this.Strify("name");
-    static __toString = this.Join(this._t, this._o, this.Prop(this.String, this.__name));
+    static #__name = this.Strify("name");
+    static #__toString = this.Join(this._t, this._o, this.Prop(this.String, this.__name));
 
     // [object Undefined]
-    static Undefined = this.Execution(this.__toString);
-    static OBJECT_U = this.Prop(this.Join(this.NaN, this.Undefined), this[11]);
+    static #Undefined = this.Execution(this.__toString);
+    static #OBJECT_U = this.Prop(this.Join(this.NaN, this.Undefined), this[11]);
 
     // [object BarProp]
-    static __statusbar = this.Strify("statusbar");
-    static BarProp = this.Return(this.__statusbar);
-    static OBJECT_P = this.Prop(this.toStr(this.BarProp), this[11]);
+    static #__statusbar = this.Strify("statusbar");
+    static #BarProp = this.Return(this.__statusbar);
+    static #OBJECT_P = this.Prop(this.toStr(this.BarProp), this[11]);
 
     // btoa, atob function
     // base64 <- ascii
-    static __btoa = this.Strify("btoa");
-    static Btoa($0, $i) {
+    static #__btoa = this.Strify("btoa");
+    static #Btoa($0, $i) {
         if ($i === undefined) {
             return this.Execution(this.__btoa, $0);
         } else {
@@ -265,8 +267,8 @@ class CORE {
         }
     }
     // ascii <- base64
-    static __atob = this.Strify("atob");
-    static Atob($0, $i) {
+    static #__atob = this.Strify("atob");
+    static #Atob($0, $i) {
         if ($i === undefined) {
             return this.Execution(this.__atob, $0);
         } else {
@@ -274,7 +276,7 @@ class CORE {
         }
     }
     // toString base radix
-    static Radix($0, $1, $i) {
+    static #Radix($0, $1, $i) {
         if (typeof eval($0) == "string") {
             $0 = this.toNum(this.toObj($0));
         }
@@ -285,92 +287,92 @@ class CORE {
         }
     }
 
-    static ATOB_EXCLAMATION = this.Atob(this.Join(this._I, this.false), this[0]); //&excl;
-    static ATOB_QUOTATION = this.Atob(this.Strify("000i"), this[2]); //&quot;
-    static ATOB_NUMBER = this.Atob(this.Join(this.Strify("0i"), this.toArr(this.NaN), this.false), this[1]); //&num;
-    static ATOB_DOLLAR = this.Atob(this.Strify("0iS"), this[1]); //&dollar;
-    static ATOB_PERCENT = this.Atob(this.Strify("000l"), this[2]); //&percnt;
-    static ATOB_AMPERSAND = this.Atob(this.Strify("0ia"), this[1]); //&amp;
-    static ATOB_APOSTROPHE = this.Atob(this.Join(this.Strify("0i"), this.false), this[1]); //&apos;
-    static ATOB_ASTERISK = this.Atob(this.Strify("0ir"), this[1]); //&ast;
-    static ATOB_SLASH = this.Atob(this.Strify("000v"), this[2]); //&sol;
-    static ATOB_COLON = this.Atob(this.Strify("0006"), this[2]); //&colon;
-    static ATOB_SEMI = this.Atob(this.Strify("0007"), this[2]); //&semi;
-    static ATOB_LESS = this.Atob(this.Strify("0008"), this[2]); //&lt;
-    static ATOB_EQUALS = this.Atob(this.Strify("0009"), this[2]); //&equals;
-    static ATOB_GREATER = this.Atob(this.Join(this.Strify("000"), this._PLUS), this[2]); //&gt;
-    static ATOB_QUESTION = this.Atob(this.Strify("0j8"), this[1]); //&quest;
-    static ATOB_AT = this.Atob(this.Strify("00A"), this[1]); //&commat;
-    static ATOB_BACKSLASH = this.Atob(this.Strify("001c"), this[2]); //&bsol;
-    static ATOB_CARET = this.Atob(this.Join(this.undefined, this.toArr(this.false)), this[2]); //&Hat;
-    static ATOB_UNDERSCORE = this.Atob(this.Join(this.NaN, this.toArr(this.false)), this[2]); //&UnderBar;
-    static ATOB_GRAVE = this.Atob(this.Strify("02A"), this[1]); //&grave;
-    static ATOB_VERTICAL = this.Atob(this.Join(this._f, this.toArr(this.NaN)), this[0]); //&vert;
-    static ATOB_TILDE = this.Atob(this.Join(this._f, this.undefined), this[0]);
+    static #ATOB_EXCLAMATION = this.Atob(this.Join(this._I, this.false), this[0]); //&excl;
+    static #ATOB_QUOTATION = this.Atob(this.Strify("000i"), this[2]); //&quot;
+    static #ATOB_NUMBER = this.Atob(this.Join(this.Strify("0i"), this.toArr(this.NaN), this.false), this[1]); //&num;
+    static #ATOB_DOLLAR = this.Atob(this.Strify("0iS"), this[1]); //&dollar;
+    static #ATOB_PERCENT = this.Atob(this.Strify("000l"), this[2]); //&percnt;
+    static #ATOB_AMPERSAND = this.Atob(this.Strify("0ia"), this[1]); //&amp;
+    static #ATOB_APOSTROPHE = this.Atob(this.Join(this.Strify("0i"), this.false), this[1]); //&apos;
+    static #ATOB_ASTERISK = this.Atob(this.Strify("0ir"), this[1]); //&ast;
+    static #ATOB_SLASH = this.Atob(this.Strify("0i8"), this[1]); //&sol;
+    static #ATOB_COLON = this.Atob(this.Strify("0006"), this[2]); //&colon;
+    static #ATOB_SEMI = this.Atob(this.Strify("0007"), this[2]); //&semi;
+    static #ATOB_LESS = this.Atob(this.Strify("0008"), this[2]); //&lt;
+    static #ATOB_EQUALS = this.Atob(this.Strify("0009"), this[2]); //&equals;
+    static #ATOB_GREATER = this.Atob(this.Join(this.Strify("000"), this._PLUS), this[2]); //&gt;
+    static #ATOB_QUESTION = this.Atob(this.Strify("0j8"), this[1]); //&quest;
+    static #ATOB_AT = this.Atob(this.Strify("00A"), this[1]); //&commat;
+    static #ATOB_BACKSLASH = this.Atob(this.Strify("001c"), this[2]); //&bsol;
+    static #ATOB_CARET = this.Atob(this.Join(this.undefined, this.toArr(this.false)), this[2]); //&Hat;
+    static #ATOB_UNDERSCORE = this.Atob(this.Join(this.NaN, this.toArr(this.false)), this[2]); //&UnderBar;
+    static #ATOB_GRAVE = this.Atob(this.Strify("02A"), this[1]); //&grave;
+    static #ATOB_VERTICAL = this.Atob(this.Join(this._f, this.toArr(this.NaN)), this[0]); //&vert;
+    static #ATOB_TILDE = this.Atob(this.Join(this._f, this.undefined), this[0]);
 
-    static ATOB_C = this.Atob(this.Join(this.Strify("00"), this.toArr(this.NaN), this.false), this[1]);
-    static ATOB_D = this.Atob(this.Strify("00S"), this[1]);
-    static ATOB_E = this.Atob(this.Strify("001"), this[2]);
-    static ATOB_G = this.Atob(this.Join(this.Strify("00"), this.false), this[1]);
-    static ATOB_H = this.Atob(this.Join(this.Strify("001"), this.toArr(this.Infinity)), this[2]);
-    static ATOB_J = this.Atob(this.Strify("00r"), this[1]);
-    static ATOB_K = this.Atob(this.Join(this.Strify("00"), this.true), this[1]);
-    static ATOB_L = this.Atob(this.Strify("00y"), this[1]);
-    static ATOB_M = this.Atob(this.Strify("000"), this[1]);
-    static ATOB_P = this.Atob(this.Strify("01A"), this[1]);
-    static ATOB_Q = this.Atob(this.Strify("01F"), this[1]);
-    static ATOB_R = this.Atob(this.Join(this.Strify("01"), this.toArr(this.Infinity)), this[1]);
-    static ATOB_T = this.Atob(this.Strify("01S"), this[1]);
-    static ATOB_V = this.Atob(this.Strify("01a"), this[1]);
-    static ATOB_W = this.Atob(this.Join(this.Strify("01"), this.false), this[1]);
-    static ATOB_X = this.Atob(this.Strify("01i"), this[1]);
-    static ATOB_Y = this.Atob(this.Strify("01n"), this[1]);
-    static ATOB_Z = this.Atob(this.Strify("01r"), this[1]);
+    static #ATOB_C = this.Atob(this.Join(this.Strify("00"), this.toArr(this.NaN), this.false), this[1]);
+    static #ATOB_D = this.Atob(this.Strify("00S"), this[1]);
+    static #ATOB_E = this.Atob(this.Strify("001"), this[2]);
+    static #ATOB_G = this.Atob(this.Join(this.Strify("00"), this.false), this[1]);
+    static #ATOB_H = this.Atob(this.Join(this.Strify("001"), this.toArr(this.Infinity)), this[2]);
+    static #ATOB_J = this.Atob(this.Strify("00r"), this[1]);
+    static #ATOB_K = this.Atob(this.Join(this.Strify("00"), this.true), this[1]);
+    static #ATOB_L = this.Atob(this.Strify("00y"), this[1]);
+    static #ATOB_M = this.Atob(this.Strify("000"), this[1]);
+    static #ATOB_P = this.Atob(this.Strify("01A"), this[1]);
+    static #ATOB_Q = this.Atob(this.Strify("01F"), this[1]);
+    static #ATOB_R = this.Atob(this.Join(this.Strify("01"), this.toArr(this.Infinity)), this[1]);
+    static #ATOB_T = this.Atob(this.Strify("01S"), this[1]);
+    static #ATOB_V = this.Atob(this.Strify("01a"), this[1]);
+    static #ATOB_W = this.Atob(this.Join(this.Strify("01"), this.false), this[1]);
+    static #ATOB_X = this.Atob(this.Strify("01i"), this[1]);
+    static #ATOB_Y = this.Atob(this.Strify("01n"), this[1]);
+    static #ATOB_Z = this.Atob(this.Strify("01r"), this[1]);
     // static ATOB_Z1 = this.Atob(this.Join(this.Stringify("00"), this.toArr(this.NaN), this.toArr(this[0])), this[2]); //<-same length
 
-    static ATOB_h = this.Atob(this.Join(this._a, this.toArr(this.NaN)), this[0]);
-    static ATOB_k = this.Atob(this.Strify("a0"));
-    static ATOB_p = this.Atob(this.Join(this._c, this.toArr(this.NaN)), this[0]);
-    static ATOB_q = this.Atob(this.Join(this._c, this.false), this[0]);
-    static ATOB_x = this.Atob(this.Join(this._e, this.toArr(this.NaN)), this[0]);
-    static ATOB_z = this.Atob(this.Join(this._e, this.undefined), this[0]);
+    static #ATOB_h = this.Atob(this.Join(this._a, this.toArr(this.NaN)), this[0]);
+    static #ATOB_k = this.Atob(this.Strify("a0"));
+    static #ATOB_p = this.Atob(this.Join(this._c, this.toArr(this.NaN)), this[0]);
+    static #ATOB_q = this.Atob(this.Join(this._c, this.false), this[0]);
+    static #ATOB_x = this.Atob(this.Join(this._e, this.toArr(this.NaN)), this[0]);
+    static #ATOB_z = this.Atob(this.Join(this._e, this.undefined), this[0]);
 
-    static BTOA_EQUALS = this.Btoa(this[0], this[2]);
+    static #BTOA_EQUALS = this.Btoa(this[0], this[2]);
 
-    static BTOA_C = this.Btoa(this.Join(this[0], this._LPAR), this[1]);
-    static BTOA_D = this.Btoa(this.Strify("00"), this[1]);
-    static BTOA_E = this.Btoa(this.Join(this.Strify("0"), this.toArr(this.NaN)), this[1]);
-    static BTOA_G = this.Btoa(this.Join(this.toArr(this[0]), this.false), this[1]);
-    static BTOA_H = this.Btoa(this.true, this[1]);
-    static BTOA_J = this.Btoa(this.true, this[2]);
-    static BTOA_K = this.Btoa(this._PLUS, this[0]);
-    static BTOA_L = this.Btoa(this._PERIOD, this[0]);
-    static BTOA_M = this.Btoa(this[0], this[0]);
-    static BTOA_P = this.Btoa(this.Object, this[11]);
-    static BTOA_Q = this.Btoa(this[1], this[1]);
-    static BTOA_R = this.Btoa(this.Join(this.toArr(this[0]), this.true), this[2]);
-    static BTOA_T = this.Btoa(this.NaN, this[0]);
-    static BTOA_U = this.Btoa(this.Join(this[1], this.toArr(this.NaN)), this[1]);
-    static BTOA_V = this.Btoa(this.undefined, this[10]);
-    static BTOA_W = this.Btoa(this.undefined, this[1]);
-    static BTOA_X = this.Btoa(this.Join(this.toArr(this[1]), this.true), this[1]);
-    static BTOA_Y = this.Btoa(this._a, this[0]);
-    static BTOA_Z = this.Btoa(this.false, this[0]);
+    static #BTOA_C = this.Btoa(this.Join(this[0], this._LPAR), this[1]);
+    static #BTOA_D = this.Btoa(this.Strify("00"), this[1]);
+    static #BTOA_E = this.Btoa(this.Join(this.Strify("0"), this.toArr(this.NaN)), this[1]);
+    static #BTOA_G = this.Btoa(this.Join(this.toArr(this[0]), this.false), this[1]);
+    static #BTOA_H = this.Btoa(this.true, this[1]);
+    static #BTOA_J = this.Btoa(this.true, this[2]);
+    static #BTOA_K = this.Btoa(this._PLUS, this[0]);
+    static #BTOA_L = this.Btoa(this._PERIOD, this[0]);
+    static #BTOA_M = this.Btoa(this[0], this[0]);
+    static #BTOA_P = this.Btoa(this.Object, this[11]);
+    static #BTOA_Q = this.Btoa(this[1], this[1]);
+    static #BTOA_R = this.Btoa(this.Join(this.toArr(this[0]), this.true), this[2]);
+    static #BTOA_T = this.Btoa(this.NaN, this[0]);
+    static #BTOA_U = this.Btoa(this.Join(this[1], this.toArr(this.NaN)), this[1]);
+    static #BTOA_V = this.Btoa(this.undefined, this[10]);
+    static #BTOA_W = this.Btoa(this.undefined, this[1]);
+    static #BTOA_X = this.Btoa(this.Join(this.toArr(this[1]), this.true), this[1]);
+    static #BTOA_Y = this.Btoa(this._a, this[0]);
+    static #BTOA_Z = this.Btoa(this.false, this[0]);
 
-    static BTOA_h = this.Btoa(this.Join(this.toArr(this[0]), this.false), this[3]);
-    static BTOA_k = this.Btoa(this.undefined, this[3]);
-    static BTOA_p = this.Prop(this.Join(this.NaN, this.Btoa(this.undefined)), this[10]);
-    static BTOA_q = this.Btoa(this.Strify("00j"), this[3]);
-    static BTOA_x = this.Btoa(this.Join(this.false, this.toArr(this.false)), this[10]);
-    static BTOA_z = this.Btoa(this.Join(this.false, this.toArr(this.false)), this[11]);
+    static #BTOA_h = this.Btoa(this.Join(this.toArr(this[0]), this.false), this[3]);
+    static #BTOA_k = this.Btoa(this.undefined, this[3]);
+    static #BTOA_p = this.Prop(this.Join(this.NaN, this.Btoa(this.undefined)), this[10]);
+    static #BTOA_q = this.Btoa(this.Strify("00j"), this[3]);
+    static #BTOA_x = this.Btoa(this.Join(this.false, this.toArr(this.false)), this[10]);
+    static #BTOA_z = this.Btoa(this.Join(this.false, this.toArr(this.false)), this[11]);
 
-    static RADIX_h = this.Radix(this[101], this[21], this[1]);
-    static RADIX_k = this.Radix(this[20], this[21]);
-    static RADIX_p = this.Radix(this[211], this[31], this[1]);
-    static RADIX_v = this.Radix(this[31], this[32]);
-    static RADIX_w = this.Radix(this[32], this[33]);
-    static RADIX_x = this.Radix(this[101], this[34], this[1]);
-    static RADIX_z = this.Radix(this[35], this[36]);
+    static #RADIX_h = this.Radix(this[101], this[21], this[1]);
+    static #RADIX_k = this.Radix(this[20], this[21]);
+    static #RADIX_p = this.Radix(this[211], this[31], this[1]);
+    static #RADIX_v = this.Radix(this[31], this[32]);
+    static #RADIX_w = this.Radix(this[32], this[33]);
+    static #RADIX_x = this.Radix(this[101], this[34], this[1]);
+    static #RADIX_z = this.Radix(this[35], this[36]);
 
     // "string".italics() (Deprecated)
     // "<i>string</i>" -> "<" ">" "/"
@@ -378,43 +380,40 @@ class CORE {
     // "<font color="undefined">string</font>" -> "=" "\""
     // "<font color="<font color=&quot;undefined&quot;></font>"></font>" -> "&"
     // "<font color=true"<font color=&quot;undefined&quot;></font>"></font>" -> "q"
-    static __italics = this.Strify("italics");
-    static Italics = this.toFunc(this.Prop(this.string, this.__italics));
-    static Italics_Pad = this.toFunc(this.Prop(this.false0, this.__italics));
-    static __fontcolor = this.Strify("fontcolor");
-    static Fontcolor = this.toFunc(this.Prop(this.string, this.__fontcolor));
-    static Fontcolor_Empty = this.toFunc(this.Prop(this.string, this.__fontcolor), this.array);
-    static Fontcolor_Font = this.toFunc(this.Prop(this.string, this.__fontcolor), this.Fontcolor);
-    static Fontcolor_True_Font = this.toFunc(this.Prop(this.string, this.__fontcolor), this.Join(this.true, this.Fontcolor));
-    static Fontcolor_Empty_Font = this.toFunc(this.Prop(this.string, this.__fontcolor), this.Fontcolor_Empty);
+    static #__italics = this.Strify("italics");
+    static #Italics = this.toFunc(this.Prop(this.string, this.__italics));
+    static #Italics_Pad = this.toFunc(this.Prop(this.false0, this.__italics));
+    static #__fontcolor = this.Strify("fontcolor");
+    static #Fontcolor = this.toFunc(this.Prop(this.string, this.__fontcolor));
+    static #Fontcolor_Empty = this.toFunc(this.Prop(this.string, this.__fontcolor), this.array);
+    static #Fontcolor_Font = this.toFunc(this.Prop(this.string, this.__fontcolor), this.Fontcolor);
+    static #Fontcolor_True_Font = this.toFunc(this.Prop(this.string, this.__fontcolor), this.Join(this.true, this.Fontcolor));
+    static #Fontcolor_Empty_Font = this.toFunc(this.Prop(this.string, this.__fontcolor), this.Fontcolor_Empty);
 
-    static ITALICS_LESS = this.Prop(this.Italics, this[0]);
-    static ITALICS_GREATER = this.Prop(this.Italics, this[2]);
-    static ITALICS_SLASH = this.Prop(this.Italics_Pad, this[10]);
+    static #ITALICS_LESS = this.Prop(this.Italics, this[0]);
+    static #ITALICS_GREATER = this.Prop(this.Italics, this[2]);
+    static #ITALICS_SLASH = this.Prop(this.Italics_Pad, this[10]);
 
-    static FONT_EQUALS = this.Prop(this.Fontcolor, this[11]);
-    static FONT_QUOTATION = this.Prop(this.Fontcolor, this[12]);
-    static FONT_AMPERSAND = this.Prop(this.Fontcolor_Empty_Font, this[31]);
-    static FONT_SEMI = this.Prop(this.Fontcolor_Font, this[30]);
-    static FONT_q = this.Prop(this.Fontcolor_True_Font, this[30]);
+    static #FONT_EQUALS = this.Prop(this.Fontcolor, this[11]);
+    static #FONT_QUOTATION = this.Prop(this.Fontcolor, this[12]);
+    static #FONT_AMPERSAND = this.Prop(this.Fontcolor_Empty_Font, this[31]);
+    static #FONT_SEMI = this.Prop(this.Fontcolor_Font, this[30]);
+    static #FONT_q = this.Prop(this.Fontcolor_True_Font, this[30]);
 
-    static Compare($0 = "") {
-        let props = Object.getOwnPropertyNames(this).filter((arg) => {
-            return arg.endsWith("_" + $0) && typeof this[arg] !== "function" && this[arg].length !== undefined;
-        });
-        if (props.length > 0) {
-            return props
-                .map((e) => {
-                    return this[e];
-                })
-                .sort((a, b) => a.length - b.length)[0];
-        } else {
-            return undefined;
-        }
-    }
-    static get test() {
-        return function (a) {
-            console.log(a);
+    static get Compare() {
+        return function ($0 = "") {
+            let props = Object.getOwnPropertyNames(this).filter((arg) => {
+                return arg.endsWith("_" + $0) && typeof this[arg] !== "function" && this[arg].length !== undefined;
+            });
+            if (props.length > 0) {
+                return props
+                    .map((e) => {
+                        return this[e];
+                    })
+                    .sort((a, b) => a.length - b.length)[0];
+            } else {
+                return undefined;
+            }
         };
     }
 
@@ -445,6 +444,33 @@ class CORE {
     static get Prop() {
         return this.#Prop;
     }
+    static get toPar() {
+        return this.#toPar;
+    }
+    static get toBrc() {
+        return this.#toBrc;
+    }
+    static get Anonymous() {
+        return this.#Anonymous;
+    }
+    static get AnonymousDebug() {
+        return this.#AnonymousDebug;
+    }
+    static get Return() {
+        return this.#Return;
+    }
+    static get Execution() {
+        return this.#Execution;
+    }
+    static get Btoa() {
+        return this.#Btoa;
+    }
+    static get Atob() {
+        return this.#Atob;
+    }
+    static get Radix() {
+        return this.#Radix;
+    }
 
     static get array() {
         return this.brk;
@@ -474,9 +500,53 @@ class CORE {
         return this.#Infinity;
     }
 
+    static get At() {
+        return this.#At;
+    }
+    static get Object() {
+        return this.#Object;
+    }
+    static get Window() {
+        return this.#Window;
+    }
+    static get Iterator() {
+        return this.#Iterator;
+    }
+    static get Array() {
+        return this.#Array;
+    }
+    static get Number() {
+        return this.#Number;
+    }
+    static get String() {
+        return this.#String;
+    }
+    static get Boolean() {
+        return this.#Boolean;
+    }
+    static get Function() {
+        return this.#Function;
+    }
+    static get Undefined() {
+        return this.#Undefined;
+    }
+    static get BarProp() {
+        return this.#BarProp;
+    }
+
+    static get _SPACE() {
+        return this.#_SPACE;
+    }
+    static get _LPAR() {
+        return this.#_LPAR;
+    }
+    static get _RPAR() {
+        return this.#_RPAR;
+    }
     static get _PLUS() {
         return this.#_PLUS;
     }
+
     static get _MINUS() {
         return this.#_MINUS;
     }
@@ -514,6 +584,409 @@ class CORE {
     static get 9() {
         return this.#_9;
     }
+
+    static get _A() {
+        return this.#_A;
+    }
+    static get _F() {
+        return this.#_F;
+    }
+    static get _I() {
+        return this.#_I;
+    }
+    static get _N() {
+        return this.#_N;
+    }
+    static get _O() {
+        return this.#_O;
+    }
+    static get _S() {
+        return this.#_S;
+    }
+
+    static get _LBRK() {
+        return this.#_LBRK;
+    }
+    static get _RBRK() {
+        return this.#_RBRK;
+    }
+
+    static get _a() {
+        return this.#_a;
+    }
+    static get _b() {
+        return this.#_b;
+    }
+    static get _c() {
+        return this.#_c;
+    }
+    static get _d() {
+        return this.#_d;
+    }
+    static get _e() {
+        return this.#_e;
+    }
+    static get _f() {
+        return this.#_f;
+    }
+    static get _g() {
+        return this.#_g;
+    }
+    static get _i() {
+        return this.#_i;
+    }
+    static get _j() {
+        return this.#_j;
+    }
+    static get _l() {
+        return this.#_l;
+    }
+    static get _m() {
+        return this.#_m;
+    }
+    static get _n() {
+        return this.#_n;
+    }
+    static get _o() {
+        return this.#_o;
+    }
+    static get _r() {
+        return this.#_r;
+    }
+    static get _s() {
+        return this.#_s;
+    }
+    static get _t() {
+        return this.#_t;
+    }
+    static get _u() {
+        return this.#_u;
+    }
+    static get _v() {
+        return this.#_v;
+    }
+    static get _y() {
+        return this.#_y;
+    }
+
+    static get _LBRC() {
+        return this.#_LBRC;
+    }
+    static get _RBRC() {
+        return this.#_RBRC;
+    }
+
+    static get CALL_COMMA() {
+        return this.#CALL_COMMA;
+    }
+    static get OBJECT_A() {
+        return this.#OBJECT_A;
+    }
+    static get OBJECT_P() {
+        return this.#OBJECT_P;
+    }
+    static get OBJECT_O() {
+        return this.#OBJECT_O;
+    }
+    static get OBJECT_U() {
+        return this.#OBJECT_U;
+    }
+    static get OBJECT_W() {
+        return this.#OBJECT_W;
+    }
+    static get OBJECT_b() {
+        return this.#OBJECT_b;
+    }
+    static get OBJECT_j() {
+        return this.#OBJECT_j;
+    }
+    static get OBJECT_w() {
+        return this.#OBJECT_w;
+    }
+    static get CONST_LINEFEED() {
+        return this.#CONST_LINEFEED;
+    }
+    static get CONST_B() {
+        return this.#CONST_B;
+    }
+    static get CONST_F() {
+        return this.#CONST_F;
+    }
+    static get CONST_S() {
+        return this.#CONST_S;
+    }
+    static get CONST_g() {
+        return this.#CONST_g;
+    }
+    static get CONST_m() {
+        return this.#CONST_m;
+    }
+    static get ATOB_EXCLAMATION() {
+        return this.#ATOB_EXCLAMATION;
+    }
+    static get ATOB_QUOTATION() {
+        return this.#ATOB_QUOTATION;
+    }
+    static get ATOB_NUMBER() {
+        return this.#ATOB_NUMBER;
+    }
+    static get ATOB_DOLLAR() {
+        return this.#ATOB_DOLLAR;
+    }
+    static get ATOB_PERCENT() {
+        return this.#ATOB_PERCENT;
+    }
+    static get ATOB_AMPERSAND() {
+        return this.#ATOB_AMPERSAND;
+    }
+    static get ATOB_APOSTROPHE() {
+        return this.#ATOB_APOSTROPHE;
+    }
+    static get ATOB_ASTERISK() {
+        return this.#ATOB_ASTERISK;
+    }
+    static get ATOB_SLASH() {
+        return this.#ATOB_SLASH;
+    }
+    static get ATOB_COLON() {
+        return this.#ATOB_COLON;
+    }
+    static get ATOB_SEMI() {
+        return this.#ATOB_SEMI;
+    }
+    static get ATOB_LESS() {
+        return this.#ATOB_LESS;
+    }
+    static get ATOB_EQUALS() {
+        return this.#ATOB_EQUALS;
+    }
+    static get ATOB_GREATER() {
+        return this.#ATOB_GREATER;
+    }
+    static get ATOB_QUESTION() {
+        return this.#ATOB_QUESTION;
+    }
+    static get ATOB_AT() {
+        return this.#ATOB_AT;
+    }
+    static get ATOB_BACKSLASH() {
+        return this.#ATOB_BACKSLASH;
+    }
+    static get ATOB_CARET() {
+        return this.#ATOB_CARET;
+    }
+    static get ATOB_UNDERSCORE() {
+        return this.#ATOB_UNDERSCORE;
+    }
+    static get ATOB_GRAVE() {
+        return this.#ATOB_GRAVE;
+    }
+    static get ATOB_VERTICAL() {
+        return this.#ATOB_VERTICAL;
+    }
+    static get ATOB_TILDE() {
+        return this.#ATOB_TILDE;
+    }
+    static get ATOB_C() {
+        return this.#ATOB_C;
+    }
+    static get ATOB_D() {
+        return this.#ATOB_D;
+    }
+    static get ATOB_E() {
+        return this.#ATOB_E;
+    }
+    static get ATOB_G() {
+        return this.#ATOB_G;
+    }
+    static get ATOB_H() {
+        return this.#ATOB_H;
+    }
+    static get ATOB_J() {
+        return this.#ATOB_J;
+    }
+    static get ATOB_K() {
+        return this.#ATOB_K;
+    }
+    static get ATOB_L() {
+        return this.#ATOB_L;
+    }
+    static get ATOB_M() {
+        return this.#ATOB_M;
+    }
+    static get ATOB_P() {
+        return this.#ATOB_P;
+    }
+    static get ATOB_Q() {
+        return this.#ATOB_Q;
+    }
+    static get ATOB_R() {
+        return this.#ATOB_R;
+    }
+    static get ATOB_T() {
+        return this.#ATOB_T;
+    }
+    static get ATOB_V() {
+        return this.#ATOB_V;
+    }
+    static get ATOB_W() {
+        return this.#ATOB_W;
+    }
+    static get ATOB_X() {
+        return this.#ATOB_X;
+    }
+    static get ATOB_Y() {
+        return this.#ATOB_Y;
+    }
+    static get ATOB_Z() {
+        return this.#ATOB_Z;
+    }
+    static get ATOB_h() {
+        return this.#ATOB_h;
+    }
+    static get ATOB_k() {
+        return this.#ATOB_k;
+    }
+    static get ATOB_p() {
+        return this.#ATOB_p;
+    }
+    static get ATOB_q() {
+        return this.#ATOB_q;
+    }
+    static get ATOB_x() {
+        return this.#ATOB_x;
+    }
+    static get ATOB_z() {
+        return this.#ATOB_z;
+    }
+    static get BTOA_EQUALS() {
+        return this.#BTOA_EQUALS;
+    }
+    static get BTOA_C() {
+        return this.#BTOA_C;
+    }
+    static get BTOA_D() {
+        return this.#BTOA_D;
+    }
+    static get BTOA_E() {
+        return this.#BTOA_E;
+    }
+    static get BTOA_G() {
+        return this.#BTOA_G;
+    }
+    static get BTOA_H() {
+        return this.#BTOA_H;
+    }
+    static get BTOA_J() {
+        return this.#BTOA_J;
+    }
+    static get BTOA_K() {
+        return this.#BTOA_K;
+    }
+    static get BTOA_L() {
+        return this.#BTOA_L;
+    }
+    static get BTOA_M() {
+        return this.#BTOA_M;
+    }
+    static get BTOA_P() {
+        return this.#BTOA_P;
+    }
+    static get BTOA_Q() {
+        return this.#BTOA_Q;
+    }
+    static get BTOA_R() {
+        return this.#BTOA_R;
+    }
+    static get BTOA_T() {
+        return this.#BTOA_T;
+    }
+    static get BTOA_U() {
+        return this.#BTOA_U;
+    }
+    static get BTOA_V() {
+        return this.#BTOA_V;
+    }
+    static get BTOA_W() {
+        return this.#BTOA_W;
+    }
+    static get BTOA_X() {
+        return this.#BTOA_X;
+    }
+    static get BTOA_Y() {
+        return this.#BTOA_Y;
+    }
+    static get BTOA_Z() {
+        return this.#BTOA_Z;
+    }
+    static get BTOA_h() {
+        return this.#BTOA_h;
+    }
+    static get BTOA_k() {
+        return this.#BTOA_k;
+    }
+    static get BTOA_p() {
+        return this.#BTOA_p;
+    }
+    static get BTOA_q() {
+        return this.#BTOA_q;
+    }
+    static get BTOA_x() {
+        return this.#BTOA_x;
+    }
+    static get BTOA_z() {
+        return this.#BTOA_z;
+    }
+    static get RADIX_h() {
+        return this.#RADIX_h;
+    }
+    static get RADIX_k() {
+        return this.#RADIX_k;
+    }
+    static get RADIX_p() {
+        return this.#RADIX_p;
+    }
+    static get RADIX_v() {
+        return this.#RADIX_v;
+    }
+    static get RADIX_w() {
+        return this.#RADIX_w;
+    }
+    static get RADIX_x() {
+        return this.#RADIX_x;
+    }
+    static get RADIX_z() {
+        return this.#RADIX_z;
+    }
+    static get ITALICS_LESS() {
+        return this.#ITALICS_LESS;
+    }
+    static get ITALICS_GREATER() {
+        return this.#ITALICS_GREATER;
+    }
+    static get ITALICS_SLASH() {
+        return this.#ITALICS_SLASH;
+    }
+    static get FONT_EQUALS() {
+        return this.#FONT_EQUALS;
+    }
+    static get FONT_QUOTATION() {
+        return this.#FONT_QUOTATION;
+    }
+    static get FONT_AMPERSAND() {
+        return this.#FONT_AMPERSAND;
+    }
+    static get FONT_SEMI() {
+        return this.#FONT_SEMI;
+    }
+    static get FONT_q() {
+        return this.#FONT_q;
+    }
+
+    static get _BRC() {
+        return this.#_BRC;
+    }
+
     static get 10() {
         return this.#_10;
     }
@@ -559,51 +1032,6 @@ class CORE {
     static get 211() {
         return this.#_211;
     }
-
-    static get _N() {
-        return this.#_N;
-    }
-    static get _I() {
-        return this.#_I;
-    }
-
-    static get _a() {
-        return this.#_a;
-    }
-    static get _d() {
-        return this.#_d;
-    }
-    static get _e() {
-        return this.#_e;
-    }
-    static get _f() {
-        return this.#_f;
-    }
-    static get _i() {
-        return this.#_i;
-    }
-    static get _l() {
-        return this.#_l;
-    }
-    static get _n() {
-        return this.#_n;
-    }
-    static get _r() {
-        return this.#_r;
-    }
-    static get _s() {
-        return this.#_s;
-    }
-    static get _t() {
-        return this.#_t;
-    }
-    static get _u() {
-        return this.#_u;
-    }
-    static get _y() {
-        return this.#_y;
-    }
-
     static get _1e100() {
         return this.#_1e100;
     }
@@ -612,6 +1040,70 @@ class CORE {
     }
     static get _1e7() {
         return this.#_1e7;
+    }
+
+    static get __at() {
+        return this.#__at;
+    }
+    static get __atob() {
+        return this.#__atob;
+    }
+    static get __btoa() {
+        return this.#__btoa;
+    }
+    static get __call() {
+        return this.#__call;
+    }
+    static get __constructor() {
+        return this.#__constructor;
+    }
+    static get __entries() {
+        return this.#__entries;
+    }
+    static get __flat() {
+        return this.#__flat;
+    }
+    static get __fontcolor() {
+        return this.#__fontcolor;
+    }
+    static get Fontcolor() {
+        return this.#Fontcolor;
+    }
+    static get Fontcolor_Empty() {
+        return this.#Fontcolor_Empty;
+    }
+    static get Fontcolor_Font() {
+        return this.#Fontcolor_Font;
+    }
+    static get Fontcolor_True_Font() {
+        return this.#Fontcolor_True_Font;
+    }
+    static get Fontcolor_Empty_Font() {
+        return this.#Fontcolor_Empty_Font;
+    }
+    static get __italics() {
+        return this.#__italics;
+    }
+    static get Italics() {
+        return this.#Italics;
+    }
+    static get Italics_Pad() {
+        return this.#Italics_Pad;
+    }
+    static get __name() {
+        return this.#__name;
+    }
+    static get __return() {
+        return this.#__return;
+    }
+    static get __self() {
+        return this.#__self;
+    }
+    static get __statusbar() {
+        return this.#__statusbar;
+    }
+    static get __toString() {
+        return this.#__toString;
     }
 }
 // Object.defineProperties(CORE, { writeable: false, enumerable: true, configurable: false });
@@ -1012,17 +1504,156 @@ class JSF {
     static get ["~"]() {
         return this.#TILDE;
     }
+    // constructor($0) {
+    //     console.log(delete this);
+    // }
 
-    constructor($0) {
-        console.log(delete this);
+    static get Strify() {
+        return function ($0) {
+            return CORE.Join(
+                ...$0
+                    .toString()
+                    .split("")
+                    .map((_0, _i) => (!isNaN(parseInt(_0)) ? (_i == 0 ? this[_0] : CORE.toArr(this[_0])) : (this[_0] ?? this.#Unicode(_0))))
+            );
+        };
     }
+    static #KNOWN = "AFINOSabcdefgijlmnorstuvy+0123456789";
+    static #BS64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".split("");
+
+    static Infix = [true, false, undefined, NaN, Infinity]
+        .map((_0) => {
+            let _l = Array((undefined + []).length).fill(null);
+
+            [true, false, undefined, NaN, Infinity].forEach((_1) => {
+                _l[(_1 + []).length - 1] = (_1 + (_0 + [])).slice((_1 + []).length - 1, (_1 + []).length + 1);
+            });
+            return [
+                [
+                    _0 + [],
+                    Array((_0 + []).length - 1)
+                        .fill(null)
+                        .map((_2, _1) => {
+                            return (_0 + []).slice(_1, _1 + 2);
+                        }),
+                ],
+                ["x" + _0, _l],
+            ];
+        })
+        .flat();
+
+    static #Ascii($0) {
+        let $4 = $0.toString(4).padStart(4, 0);
+        let $$$_ = this.#BS64.filter((_0, _1) => {
+            return this.#KNOWN.includes(this.#BS64[_1]) && $4.slice(0, 3) == _1.toString(4).padStart(3, 0).slice(0, 3);
+        });
+        let ___$ = this.#BS64.filter((_0, _1) => {
+            return this.#KNOWN.includes(this.#BS64[_1]) && $4.slice(3, 4) == _1.toString(4).padStart(3, 0).slice(0, 1);
+        });
+        let $$__ = this.#BS64.filter((_0, _1) => {
+            return this.#KNOWN.includes(this.#BS64[_1]) && $4.slice(0, 2) == _1.toString(4).padStart(3, 0).slice(1, 3);
+        });
+        let __$$ = this.#BS64.filter((_0, _1) => {
+            return this.#KNOWN.includes(this.#BS64[_1]) && $4.slice(2, 4) == _1.toString(4).padStart(3, 0).slice(0, 2);
+        });
+        let $___ = this.#BS64.filter((_0, _1) => {
+            return this.#KNOWN.includes(this.#BS64[_1]) && $4.slice(0, 1) == _1.toString(4).padStart(3, 0).slice(2, 3);
+        });
+        let _$$$ = this.#BS64.filter((_0, _1) => {
+            return this.#KNOWN.includes(this.#BS64[_1]) && $4.slice(1, 4) == _1.toString(4).padStart(3, 0).slice(0, 3);
+        });
+        let _o = [];
+        let _s = [
+            [$$$_, ___$],
+            [$$__, __$$],
+            [$___, _$$$],
+        ];
+        let _fix = [];
+        let _basis = [true, false, undefined, NaN, Infinity].map((_0) => _0 + []);
+        for (let _i = 0; _i < 3; _i++) {
+            for (let _f of _s[_i][0]) {
+                for (let _b of _s[_i][1]) {
+                    let _prefix = [_f];
+                    let _postfix = [_b];
+                    for (let _k of _basis) {
+                        if (_f == _k[_k.length - 1]) {
+                            _prefix.push(_k);
+                        }
+                        if (_b == _k[0]) {
+                            _postfix.push(_k);
+                        }
+                    }
+                    // TODO: 앞에 패딩 "", 0 (3), 00 (9), NaN (6), false (3), false0 (9)   index 0(3)<1(5)<2(9)<10(11)<11(13)<3(14)<12(17)<4(19)
+                    for (let _m of _prefix) {
+                        for (let _n of _postfix) {
+                            let _k = [CORE[_m], (_m != _f || _n == NaN + [] || _n == Infinity + []) && _n != _b ? CORE.toArr(CORE[_n]) : CORE.Strify(_n)];
+                            _fix.push([_m + _n, CORE.Atob(CORE.Join(..._k))]);
+                        }
+                    }
+
+                    for (let [_k, _v] of _basis) {
+                        if (_f == _k[_k.length - 1]) {
+                        }
+                        if (_b == _k[0]) {
+                            let _y = [this.Strify(_f.padStart(1 + _i, "0")), _k == "NaN" || _k == "Infinity" ? CORE.toArr(_v) : _v];
+                            if ((_f.padStart(1 + _i, "0") + _k).length % 4 == 1) {
+                                _y.push(CORE.false);
+                            }
+                            let _x = CORE.Atob(CORE.Join(..._y), CORE[_i]);
+                            _o.push([_f.padStart(1 + _i, "0") + _k + (_y[2] ? "false" : ""), _x]);
+                        }
+                    }
+                    let _x = CORE.Atob(this.Strify((_f + _b).padStart(2 + _i, "0")), CORE[_i]);
+                    _o.push([(_f + _b).padStart(2 + _i, "0"), _x]);
+                    // if (this.SNIPPET.flat().includes(_f + _b)) {
+                    //     _o.push([_f + _b, _i + ""]);
+                    // }
+                    // _o.push(CORE.Atob(CORE.Strify(_f + _b), CORE[0]));
+                }
+            }
+        }
+
+        return _fix.sort((_0, _1) => _0[0].length - _1[0].length);
+        // return _o.sort((_0, _1) => _0.length - _1.length)[0];
+    }
+    static get Ascii() {
+        return this.#Ascii;
+    }
+    static #Unicode($0) {
+        return CORE.toFunc(CORE.Prop(CORE.String, this.Strify("fromCodePoint")), this.Strify($0));
+    }
+    static get Nonv() {
+        return function ($0) {
+            let _0 = String.fromCodePoint($0);
+            if (typeof this[_0] === "undefined") {
+                Object.defineProperty(JSF, _0, {
+                    enumerable: false,
+                    configurable: true,
+                    get() {
+                        return this.#Unicode($0);
+                    },
+                });
+            }
+            return this[_0];
+        };
+    }
+    static {}
 }
+
+const foo = new Proxy(JSF, {
+    get($0, $1) {
+        if (typeof $0[$1] === "undefined") {
+            return "6" + $1;
+        }
+        return $0[$1];
+    },
+});
+console.log(Object.getOwnPropertyDescriptors(JSF));
 
 var tt, ba, pt;
 window.onload = () => {
     try {
         tt = document.getElementById("text");
-
         pt = document.getElementById("props");
         pt.innerHTML += Object.getOwnPropertyNames(JSF).sort();
         ba = Object.getOwnPropertyNames(JSF).filter((arg) => {
